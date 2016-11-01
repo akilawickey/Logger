@@ -1,5 +1,20 @@
 var SerialPort = require('serialport');
-var port = new SerialPort('COM6', { autoOpen: false });
+var port = new SerialPort('/dev/ttyUSB0', { autoOpen: false });
+
+
+var express = require('express');
+var app = express();
+
+
+app.get('/', function (req, res) {
+	var a = "ado"
+  res.send(a);
+});
+
+app.listen(3000, function () {
+  console.log('Example app listening on port 3000!');
+});
+
 
 port.open(function (err) {
 
