@@ -1,0 +1,227 @@
+<!doctype html>
+<html>
+  <head>
+    <title>VEGA </title>
+    <!-- Websocket IO -->
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <!-- Battry_Chart Imports -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <!-- Tabs -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- Local CSS files -->
+    <!--     <link href="CSS/battryChart.css" rel="stylesheet"> -->
+
+    <!-- local JS files -->
+    <script type="text/javascript" src="battryChart.js"></script>
+
+    <style>
+      body  {
+        /*background-image: url("img/mainBack.jpg");
+        background-color: #cccccc;*/
+      }
+    </style>
+  </head>
+  <body onload="Init()">
+  <!-- Tabs -->
+  <nav class="navbar navbar-default" style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">VEGA</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'London')">Home</a></li>
+        <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'Paris')">Battery</a></li>
+        <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'London')">Page 2</a></li>
+        <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'Debug')">Debug</a></li>
+      </ul>
+    </div>
+  </nav>
+  <!-- Tabs_end -->
+      <button id = "hello">asd</button>
+
+
+    <!-- Tab Paris -->
+    <div id="Paris" class="tabcontent">
+      <!--   battry Chart -->
+      <div id="battryChart" style="float: auto; width: 60%;">
+        <div  id="container" 
+              style="min-width: 310px; 
+                     height: 400px; 
+                     margin: 0 auto;">
+         </div>
+      </div>
+      <!-- battryChart_end --> 
+    </div>
+   <!-- Tab Debug-->
+   <div id="Debug" class="tabcontent">
+     <div id="sTitle" style="margin: 20px;
+                             font-size: 20px;
+                             font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;" > Data Received </div>
+     <div id="test" style="margin-left: 80px; 
+                           border: 2px solid black;
+                           border-radius: 10px; 
+                           width:1150px;
+                           height: 600px;
+                           overflow: scroll;
+                           font-size: 18px;
+                           padding-left: 10px;
+                           border-width: 1px;"></div>
+   </div>
+
+    <!-- <form action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form> -->
+
+    <script>
+    var x = [];
+    var socket = io();
+      // $('form').submit(function(){
+    // socket.emit('chat message', reload());
+      //   $('#m').val('');
+      //   return false;
+      // });
+      socket.on('chat message', function(msg){
+        var res = msg.split(",");
+
+        x = []
+        for(var i=0; i<res.length; i++) { 
+          res[i] = parseInt(res[i], 10);
+          x.push(res[i])
+        } 
+                $('#test').append($('<li>').text(res[1]));
+
+
+        // $('#messages').append($('<li>').text(msg));
+        // $('#test').append($('<li>').text(msg));
+        // $('#test').append($('<li>').text(res));
+        // $('#test').append($('<li>').text(int8View));
+         // x = res;
+      });
+
+// window.setInterval(function() {
+//   var elem = document.getElementById('test');
+//   elem.scrollTop = elem.scrollHeight;
+// }, 500);
+
+ // x = [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2,48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2, 59.0, 59.6, 52.4, 65.2, 59.3];
+
+ // alert(x[40])
+
+
+ var chart = new Highcharts.Chart({
+    chart: {
+        renderTo: 'container'
+    },
+
+    series: [{
+        data: x       
+    }]
+});
+
+// the button action
+$('#hello').click(function() {
+    reload()
+});
+
+function reload(){
+
+  chart.series[0].setData(x);
+}
+
+setInterval(reload, 1000)
+
+//   $(function () {
+//     Highcharts.chart('container', {
+//         chart: {
+//             type: 'column',
+//             backgroundColor: "#FFFFFF",
+//             width: 1000,
+//         },
+//         title: {
+//             text: 'Battery Monitor'
+//         },
+//         subtitle: {
+//             text: 'Cell voltage levels'
+//         },
+//         xAxis: {
+//             // categories: [
+//             //     'Cell 1',
+//             //     'Cell 2',
+//             //     'Cell 3',
+//             //     'Cell 4',
+//             //     'Cell 5',
+//             //     'Cell 6',
+//             //     'Cell 7',
+//             //     'Jul',
+//             //     'Aug',
+//             //     'Sep',
+//             //     'Oct',
+//             //     'Nov',
+//             //     'Dec'
+//             // ],
+//             crosshair: true
+//         },
+//         yAxis: {
+//             min: 0,
+//             title: {
+//                 text: 'Voltage (V)'
+//             }
+//         },
+//         tooltip: {
+//             headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+//             pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+//                 '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+//             footerFormat: '</table>',
+//             shared: true,
+//             useHTML: true
+//         },
+//         plotOptions: {
+//             column: {
+//                 pointPadding: 0.1,
+//                 borderWidth: 0.1
+//             }
+//         },
+//         legend:{
+//           enabled:false
+//         },
+//         series: [{
+//             name: 'Tokyo',
+//             data: x
+
+//         }, {
+//             name: 'New York',
+//             data: x[0]
+
+//         }]
+//     });
+// });
+// <!-- BattryChart JS end-->
+/*Tab Function*/
+function openCity(evt, cityName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+function Init(){
+  openCity(event, 'London');
+}
+     
+    </script>
+  </body>
+</html>
+
+
