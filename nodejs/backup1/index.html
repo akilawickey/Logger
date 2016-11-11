@@ -1,0 +1,436 @@
+<!-- 
+
+                                      TEAM VEGA
+
+ -->
+
+<!doctype html>
+<html>
+  <head>
+    <title>VEGA </title>
+    <!-- Websocket IO -->
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <!-- Battry_Chart Imports -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
+
+    <!-- Tabs -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- Resources -->
+<!-- <script src="https://www.amcharts.com/lib/3/amcharts.js"></script> -->
+<script type="text/javascript" src = "amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<script src="https://www.amcharts.com/lib/3/amstock.js"></script>
+<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+<script src="https://www.amcharts.com/lib/3/themes/none.js"></script>
+    <!-- Local SPEEDO METER -->
+
+
+
+    <!--     <link href="CSS/battryChart.css" rel="stylesheet"> -->
+
+    <!-- local JS files -->
+    <script type="text/javascript" src="battryChart.js"></script>
+
+    <style>
+      body  {
+        /*background-image: url("img/mainBack.jpg");
+        background-color: #cccccc;*/
+      }
+
+      .navbar{
+       min-height:20px; 
+       /*or whatever height you require*/
+      }
+
+      .highcharts-yaxis-grid .highcharts-grid-line {
+        display: none;
+      }
+    </style>
+  </head>
+  <body onload="javascript:Init()">
+  <!-- Tabs -->
+  <nav class="navbar navbar-default" style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">VEGA</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'home')">Home</a></li>
+        <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'battery')">Battery</a></li>
+        <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'data')">Accelometer</a></li>
+        <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'Debug')">Debug</a></li>
+      </ul>
+    </div>
+  </nav>
+  <!-- Tabs_end -->
+
+
+ 
+
+    <!-- Tab Paris -->
+    <div id="battery" class="tabcontent">
+       <div style="">
+      <nav class="navbar navbar-inverse" style="height: 25">
+        <ul class="nav nav-pills" role="tablist" >
+        <li role="presentation" class="active"><a href="#">Maximum Temperature <span class="badge">42</span></a></li>
+        <li role="presentation" class="active"><a href="#">Minimum Voltage <span class="badge">42</span></a></li>
+
+        </ul>
+      </nav>
+    </div>
+      <!--   battry Chart -->
+      <div id="battryChart" style="float: left; width: 60%;">
+        <div  id="container" 
+              style="min-width: 310px; 
+                     height: 400px; 
+                     ">
+         </div>
+      </div>
+
+      <div id="temp" style="float: right; width: 40%;"></div>
+      <!-- battryChart_end --> 
+    </div>
+
+    <div id="home" class="tabcontent">
+
+      <div id="chartdiv" style="float: left; width: 15%;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        margin-right: 0px;
+        margin-left: 0px;
+        font-size: 0
+
+      "></div>   
+      <div id="chartdiv2" style="float: left; width: 25%;"></div>   
+      <div id="chartdiv3" style="float: left; width: 15%; "></div>   
+
+
+   
+    </div>
+   <!-- Tab Debug-->
+   <div id="Debug" class="tabcontent">
+     <div id="sTitle" style="margin: 20px;
+                             font-size: 20px;
+                             font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;" > Data Received </div>
+     <div id="test" style="margin-left: 80px; 
+                           border: 2px solid black;
+                           border-radius: 10px; 
+                           width:1150px;
+                           height: 600px;
+                           overflow: scroll;
+                           font-size: 18px;
+                           padding-left: 10px;
+                           border-width: 1px;"></div>
+   </div>
+
+    <!-- <form action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form> -->
+
+    <script>
+    var x = [];
+    var y = [];
+    var socket = io();
+      // $('form').submit(function(){
+    // socket.emit('chat message', reload());
+      //   $('#m').val('');
+      //   return false;
+      // });
+      socket.on('chat message', function(msg){
+        var res = msg.split(",");
+        x = []
+        y = []
+        for(var i=35; i<res.length; i++) { 
+          res[i] = parseInt(res[i], 10);
+          x.push(res[i])
+        } 
+        for(var i=0; i<21; i++) { 
+          res[i] = parseInt(res[i], 10);
+          y.push(res[i])
+        } 
+                $('#test').append($('<li>').text(res[1]));
+        // $('#messages').append($('<li>').text(msg));
+        // $('#test').append($('<li>').text(msg));
+        // $('#test').append($('<li>').text(res));
+        // $('#test').append($('<li>').text(int8View));
+         // x = res;
+      });
+
+       var chart = new Highcharts.Chart({
+          chart: {
+              renderTo: 'container',
+              type: 'column'
+          },
+           title: {
+                  text: 'Battery Monitor'
+              },
+              subtitle: {
+                  text: 'Cell voltage levels'
+              },
+          series: [{
+              name: 'Battery Cell Voltages',
+              data: x       
+          }]
+      });
+
+// ////////////////////////////////////////////////////////////////////////////////////////
+
+        var chat_battery = Highcharts.chart('temp', {
+              chart: {
+                  type: 'line'
+              },
+              title: {
+                  text: 'Cell Temperatures'
+              },
+              subtitle: {
+                  text: 'Source: VEGA'
+              },
+              yAxis: {
+                  title: {
+                      text: 'Temperature (°C)'
+                  }
+              },
+              plotOptions: {
+                  line: {
+                      dataLabels: {
+                          enabled: true
+                      },
+                      enableMouseTracking: true
+                  }
+              },
+              series: [{
+                  name: 'Battery cell Temperatures',
+                  data: y
+              }]
+          }); 
+
+// ////////////////////////////////////////////////////////////////////////////////////////
+ 
+
+
+// ////////////////////////////////////////////////////////////////////////////////////////
+
+
+function reload(){
+  chart.series[0].setData(x);
+  chat_battery.series[0].setData(y);
+
+}
+setInterval(reload, 1000)
+
+
+function openCity(evt, cityName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+function Init(){
+   openCity(event, 'home');
+  
+}
+     
+    </script>
+    <style>
+#chartdiv {
+  width : 70%;
+  height  : 200px;
+} 
+#chartdiv2 {
+  width : 70%;
+  height  : 200px;
+}      
+#chartdiv3 {
+  width : 70%;
+  height  : 200px;
+}                                       
+</style>
+
+<!-- Resources -->
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/gauge.js"></script>
+<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+
+<!-- Chart code -->
+<script>
+var gaugeChart = AmCharts.makeChart( "chartdiv", {
+  "type": "gauge",
+  "theme": "light",
+  "axes": [ {
+    "axisThickness": 1,
+    "axisAlpha": 0.2,
+    "tickAlpha": 0.2,
+    "valueInterval": 20,
+    "bands": [ {
+      "color": "#84b761",
+       // "":"",
+      "endValue": 90,
+      "innerRadius": "45%",
+      "startValue": 0
+    }, {
+      "color": "#fdd400",
+      "endValue": 130,
+      "innerRadius": "45%",
+      "startValue": 90
+
+    }, {
+      "color": "#cc4748",
+      "endValue": 220,
+      "innerRadius": "45%",
+      "startValue": 130
+    } ],
+    "bottomText": "0 km/h",
+    "bottomTextYOffset": 10,
+    "bottomTextFontSize":15,
+    "endValue": 220
+  } ],
+  "arrows": [ {} ],
+  "export": {
+    "enabled": false
+  }
+} );
+var gaugeChart2 = AmCharts.makeChart( "chartdiv2", {
+  "theme": "dark",
+  "type": "gauge",
+  "axes": [{
+    "topTextFontSize": 20,
+    "topTextYOffset": 70,
+    "axisColor": "#31d6ea",
+    "axisThickness": 1,
+    "endValue": 100,
+    "gridInside": true,
+    "inside": true,
+    "radius": "50%",
+    "valueInterval": 10,
+    "tickColor": "#67b7dc",
+    "startAngle": -90,
+    "endAngle": 90,
+    "unit": "%",
+    "bandOutlineAlpha": 0,
+    "bands": [{
+      "color": "#0080ff",
+      "endValue": 100,
+      "innerRadius": "105%",
+      "radius": "170%",
+      "gradientRatio": [0.5, 0, -0.5],
+      "startValue": 0
+    }, {
+      "color": "#3cd3a3",
+      "endValue": 0,
+      "innerRadius": "105%",
+      "radius": "170%",
+      "gradientRatio": [0.5, 0, -0.5],
+      "startValue": 0,
+      "bottomTextFontSize":15,
+      "bottomTextYOffset": 10,
+
+
+    }]
+  }],
+  "arrows": [{
+    "alpha": 1,
+    "innerRadius": "35%",
+    "nailRadius": 0,
+    "radius": "170%"
+  }]
+});
+var gaugeChart3 = AmCharts.makeChart( "chartdiv3", {
+  "type": "gauge",
+  "theme": "light",
+  "axes": [ {
+    "axisThickness": 3,
+    "axisAlpha": 0.2,
+    "tickAlpha": 0.2,
+    "valueInterval": 20,
+    "bands": [ {
+      "color": "#84b761",
+      "endValue": 90,
+      "innerRadius": "45%",
+      "startValue": 0
+    }, {
+      "color": "#fdd400",
+      "endValue": 130,
+      "innerRadius": "45%",
+      "startValue": 90
+
+    }, {
+      "color": "#cc4748",
+      "endValue": 220,
+      "innerRadius": "45%",
+      "startValue": 130
+    } ],
+    "bottomText": "0 km/h",
+    "bottomTextYOffset": -20,
+    "endValue": 220,
+    "bottomTextFontSize":15,
+    "bottomTextYOffset": 10,
+
+
+  } ],
+  "arrows": [ {} ],
+  "export": {
+    "enabled": false
+  }
+} );
+setInterval( randomValue, 2000 );
+setInterval( randomValue2, 2000 );
+setInterval( randomValue3, 2000 );
+
+
+// set random value
+function randomValue() {
+  var value = Math.round( Math.random() * 200 );;
+  if ( gaugeChart ) {
+    if ( gaugeChart.arrows ) {
+      if ( gaugeChart.arrows[ 0 ] ) {
+        if ( gaugeChart.arrows[ 0 ].setValue ) {
+          gaugeChart.arrows[ 0 ].setValue( value );
+          gaugeChart.axes[ 0 ].setBottomText( value + " km/h" );
+        }
+      }
+    }
+  }
+}
+// set random value
+function randomValue2() {
+ var value = Math.round(Math.random() * 100);
+  gaugeChart2.arrows[0].setValue(value);
+  gaugeChart2.axes[0].setTopText(value + " %");
+  // adjust darker band to new value
+  gaugeChart2.axes[0].bands[1].setEndValue(value);
+}
+
+function randomValue3() {
+  var value = Math.round( Math.random() * 200 );;
+  if ( gaugeChart3 ) {
+    if ( gaugeChart3.arrows ) {
+      if ( gaugeChart3.arrows[ 0 ] ) {
+        if ( gaugeChart3.arrows[ 0 ].setValue ) {
+          gaugeChart3.arrows[ 0 ].setValue( value );
+          gaugeChart3.axes[ 0 ].setBottomText( value + " km/h" );
+        }
+      }
+    }
+  }
+}
+</script>
+
+
+  </body>
+</html>

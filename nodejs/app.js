@@ -2,6 +2,7 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+// var data = express();
 /*Socket IO*/
 
 /*Serial Port Intitiate*/
@@ -107,4 +108,6 @@ http.listen(3000, function(){
   console.log('listening on :3000');
 });
 
+
 /*-----------------------------------*/
+ // data.use(express.static(__dirname + '/js'));
