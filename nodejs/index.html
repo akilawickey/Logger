@@ -13,8 +13,6 @@
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <!-- ANUGULAR SPEEDOMETER AND HOME COMPONENTS-->
-
-
     <!-- Battry_Chart Imports -->
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
@@ -43,9 +41,6 @@
     <script type="text/javascript" src="battryChart.js"></script>
     <script type="text/javascript">
       var myapp = angular.module('myapp', ["highcharts-ng"]);
-
-
-
     </script>
 
     <style>
@@ -86,13 +81,19 @@
         transition: height 0.6s ease;
       }
 
+      .label {
 
+        font-size: 23px;
+        font-style: italic;
 
-
-/*      .highcharts-yaxis-grid .highcharts-grid-line {
-        display: none;
       }
-*/
+      .row {margin-top: 35px;}
+
+      .nopadding {
+      padding: 0;
+      margin: 0;
+      }
+
     </style>
   </head>
   <body onload="javascript:Init()" ng-controller="demoController as dm" style="background-color:#262626;color:white;">
@@ -100,13 +101,13 @@
   <nav class="navbar navbar-default" style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a class="navbar-brand" href="#">VEGA</a>
+        <a class="navbar-brand" href="index.html">VEGA</a>
         <!-- <img src="/content/vega.jpg" /> -->
       </div>
       <ul class="nav navbar-nav">
         <li class="active"><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'home')">Home</a></li>
         <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'battery')">Battery</a></li>
-        <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'data')">Accelometer</a></li>
+        <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'data')">Overall</a></li>
         <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'Debug')">Debug</a></li>
       </ul>
     </div>
@@ -115,29 +116,42 @@
     <!-- Tab Paris -->
     <div id="battery" class="tabcontent">
        <div style="">
-        <nav class="navbar navbar-inverse" style="height: 25">
-        <ul class="nav nav-pills" role="tablist" >
-        <li role="presentation" class="active"><a href="#">Maximum Temperature <span class="badge">42</span></a></li>
-        <li role="presentation" class="active"><a href="#">Minimum Voltage <span class="badge">42</span></a></li>
-
-        </ul>
-      </nav>
-    </div>
-      <!--   battry Chart -->
-      <div id="battryChart" style="float: left; width: 60%;">
-        <div  id="container" 
-              style="min-width: 310px; 
-                     height: 400px; 
-                     ">
-         </div>
+            <nav class="navbar navbar-inverse" style="height: 25">
+            <ul class="nav nav-pills" role="tablist" >
+            <li role="presentation" class="active"><a href="#">Maximum Temperature <span class="badge">42</span></a></li>
+            <li role="presentation" class="active"><a href="#">Minimum Voltage <span class="badge">42</span></a></li>
+            </ul>
+            </nav>
+        </div>
+        <div class = "row">
+          <div class= "col-md-1">
+              <div class="list-group nopadding" style="float:left;width: 100%;">          
+              <a href="#" class="list-group-item active">Battery 1</a>
+              <a href="#" class="list-group-item">Battery 2</a>
+              <a href="#" class="list-group-item">Battery 3</a>
+              <a href="#" class="list-group-item">Battery 4</a>
+              <a href="#" class="list-group-item">Battery 5</a>
+              <a href="#" class="list-group-item">Battery 6</a>
+        </div>
+          </div>
+           <div class= "col-md-6 nopadding">
+                   <!--   battry Chart -->
+              <div id="battryChart nopadding" style="width: 100%;">
+              <div  id="container" 
+              style="min-width: 310px;height: 400px; ">
+              </div>
+          </div>
+          </div>
+          <div class= "col-md-5 nopadding">
+              <div id="temp" style="width: 100%;"></div>
+          </div>
+        </div>
       </div>
 
-      <div id="temp" style="float: right; width: 40%;"></div>
       <!-- battryChart_end --> 
       <ng-gauge size="200" type="full" thick="5" value="68.2" cap="round" label="Speed"  foreground-color="#131313" background-color="rgba(255,255,255, 0.4)" append="mph"></ng-gauge>
 
     </div>
-
     <div id="home" class="tabcontent">
     <div class="container">
           <div class="row">
@@ -148,33 +162,53 @@
               </div>
               <br><br>
               <div>
-              <highchart id="container-torque" config="chartConfig" style="width:250px;height:250px;">
-              </div>
-                
+              <highchart id="container-torque" config="chartConfig" style="width:250px;height:250px;float:left">
+              </div>              
               </div>
             </div>
-
             <div class="col-md-3">
               <div>
-              <highchart id="container-speed" config="chartConfig" style="width:250px;height:250px;">
+              <highchart id="container-speed" config="chartConfig" style="width:250px;height:250px;float:left">
               </div>
             </div>
-
-            <div class="col-md-5">
-                 <div class="progress progress-bar-vertical">
-                 <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="height: 50%;">
+            <div class="col-md-1">
+                 <div class="progress progress-bar-vertical" >
+                 <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="height: 50%;float:left">
                  <span class="sr-only">60% Complete</span>
              </div>
            </div>
             </div>
+
+            <div class="col-md-1"> 
+                <div class="container">
+                    <div class="row">
+                      <span class="label label-primary">Maximum Cell Voltage 8.67V</span>   
+                    </div>
+                    <div class="row">
+                      <span class="label label-success">Maximum Cell Voltage 8.67V</span>   
+                    </div>
+                    <div class="row">
+                      <span class="label label-info">Maximum Cell Voltage 8.67V</span>   
+                    </div>
+                    <div class="row">
+                      <span class="label label-warning">Maximum Cell Voltage 8.67V</span>   
+                    </div>
+                </div>
+            </div>
             </div>
 
     </div>
+    </div>
 
      <!-- Tab Debug-->
+   <!-- Tab Debug-->
+
+    <div id="data" class="tabcontent">
+         
+
+   </div>
+
    <div id="Debug" class="tabcontent">
-
-
      <div id="sTitle" style="margin: 20px;
                              font-size: 20px;
                              font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;" > Data Received </div>
@@ -188,7 +222,6 @@
                            padding-left: 10px;
                            border-width: 1px;"></div>
    </div>
-
     <!-- <form action="">
       <input id="m" autocomplete="off" /><button>Send</button>
     </form> -->
@@ -270,8 +303,6 @@ var chartConfig = {
    //setup some logic for the chart
   }
 };
-
-
        var chart = Highcharts.chart('container', {
           chart: {
               renderTo: 'container',
@@ -319,8 +350,6 @@ var chartConfig = {
                   data: y
               }]
           }); 
-
-
 // ////////////////////////////////////////////////////////////////////////////////////////
 $(function () {
 
@@ -351,7 +380,6 @@ $(function () {
         tooltip: {
             enabled: false
         },
-
         // the value axis
         yAxis: {
             stops: [
@@ -380,7 +408,6 @@ $(function () {
             }
         }
     };
-
     // The RPM gauge
     var chartRpm = Highcharts.chart('container-rpm', Highcharts.merge(gaugeOptions, {
         yAxis: {
@@ -523,18 +550,12 @@ function openCity(evt, cityName) {
 }
 
 function Init(){
-   openCity(event, 'home');
+   openCity(event, 'battery');
   
 }
      
     </script>
-<style>
-
-                                
+<style>                        
 </style>
-
-
-
-
-  </body>
+</body>
 </html>
