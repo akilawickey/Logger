@@ -5,58 +5,27 @@
  -->
 
 <!doctype html>
-<html ng-app="demo">
+<html>
   <head>
     <title>VEGA </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Websocket IO -->
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-
     <!-- ANUGULAR SPEEDOMETER AND HOME COMPONENTS-->
 
-    <script src="angular.js"></script>
-    <script src="angularjs-gauge.js"></script>
-    <script>
-        // angular.module('yourApp', ['angularjs-gauge']);
 
-        angular.module('demo', ['angularjs-gauge'])
-            .controller('demoController', demoController);
-        demoController.$inject = [];
-
-        function demoController() {
-            var vm = this;
-            vm.data = 40;
-        }
-    </script>
-    <style>
-        .container {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            font-family: 'Open Sans';
-        }
-        
-        .item {
-            align-items: flex-start;
-            margin: 10px 10px;
-            padding: 10px;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.05);
-            border-radius: 3px 3px;
-            width: 20%;
-        }
-        
-        .item p,
-        li {
-            text-align: left;
-        }
-    </style>
     <!-- Battry_Chart Imports -->
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
+    <script src="http://code.highcharts.com/stock/highstock.src.js"></script>
+    <script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+   <script src="https://code.highcharts.com/highcharts-more.js"></script>
+   <script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
+
+
 
     <!-- Tabs -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -72,7 +41,12 @@
 
     <!-- local JS files -->
     <script type="text/javascript" src="battryChart.js"></script>
+    <script type="text/javascript">
+      var myapp = angular.module('myapp', ["highcharts-ng"]);
 
+
+
+    </script>
 
     <style>
       body  {
@@ -85,18 +59,49 @@
        /*or whatever height you require*/
       }
 
-      .highcharts-yaxis-grid .highcharts-grid-line {
-        display: none;
+      .six-sec-ease-in-out {
+      -webkit-transition: width 6s ease-in-out;
+      -moz-transition: width 6s ease-in-out;
+      -ms-transition: width 6s ease-in-out;
+      -o-transition: width 6s ease-in-out;
+      transition: width 6s ease-in-out;
       }
 
+      .container { margin-top: 50px; }
+
+      .progress-bar-vertical {
+        width: 50px;
+        min-height: 500px;
+        display: flex;
+        align-items: flex-end;
+        margin-right: 20px;
+        float: left;
+      }
+
+      .progress-bar-vertical .progress-bar {
+        width: 100%;
+        height: 0;
+        -webkit-transition: height 0.6s ease;
+        -o-transition: height 0.6s ease;
+        transition: height 0.6s ease;
+      }
+
+
+
+
+/*      .highcharts-yaxis-grid .highcharts-grid-line {
+        display: none;
+      }
+*/
     </style>
   </head>
-  <body onload="javascript:Init()" ng-controller="demoController as dm" style="background-color:#16a085;color:white;">
+  <body onload="javascript:Init()" ng-controller="demoController as dm" style="background-color:#262626;color:white;">
   <!-- Tabs -->
   <nav class="navbar navbar-default" style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;">
     <div class="container-fluid">
       <div class="navbar-header">
         <a class="navbar-brand" href="#">VEGA</a>
+        <!-- <img src="/content/vega.jpg" /> -->
       </div>
       <ul class="nav navbar-nav">
         <li class="active"><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'home')">Home</a></li>
@@ -107,14 +112,10 @@
     </div>
   </nav>
   <!-- Tabs_end -->
-
-
- 
-
     <!-- Tab Paris -->
     <div id="battery" class="tabcontent">
        <div style="">
-      <nav class="navbar navbar-inverse" style="height: 25">
+        <nav class="navbar navbar-inverse" style="height: 25">
         <ul class="nav nav-pills" role="tablist" >
         <li role="presentation" class="active"><a href="#">Maximum Temperature <span class="badge">42</span></a></li>
         <li role="presentation" class="active"><a href="#">Minimum Voltage <span class="badge">42</span></a></li>
@@ -133,83 +134,47 @@
 
       <div id="temp" style="float: right; width: 40%;"></div>
       <!-- battryChart_end --> 
-      <ng-gauge size="200" type="full" thick="5" value="68.2" cap="round" label="Speed"  foreground-color="#ffcc66" background-color="rgba(255,255,255, 0.4)" append="mph"></ng-gauge>
+      <ng-gauge size="200" type="full" thick="5" value="68.2" cap="round" label="Speed"  foreground-color="#131313" background-color="rgba(255,255,255, 0.4)" append="mph"></ng-gauge>
 
     </div>
 
     <div id="home" class="tabcontent">
-
-
     <div class="container">
-        <div class="item">
-            <h2>Type</h2>
-            <p>There are three types of Gauges you can create:
-                <ol>
-                    <li>Full style</li>
-                    <li>Semi style</li>
-                    <li>Arch style</li>
-                </ol>
-            </p>
-        </div>
-        <div class="item">
-            <h2>Full</h2>
-            <ng-gauge type="full" thick="5" value="68.2" cap="round" label="Speed" append="mph" foreground-color="#ffcc66" background-color="rgba(255,255,255, 0.4)" append="kW"></ng-gauge>
-        </div>
-        <div class="item">
-            <h2>Semi</h2>
-            <ng-gauge type="semi" thick="5" value="75" cap="butt" label="Power" foreground-color="#ffcc66" background-color="#ccc" append="kW"></ng-gauge>
-        </div>
-        <div class="item">
-            <h2>Arch</h2>
-            <ng-gauge type="arch" thick="5" value="79.6" cap="round" label="Profit" foreground-color="#ffcc66" background-color="rgba(255,255,255,0.3)" append="%"></ng-gauge>
-        </div>
-        <div class="item">
-            <h2>Form</h2>
-            <p>You can make thick and thin gauges by varying its 'thick' property.</p>
-        </div>
-        <div class="item">
-            <h2>Thick</h2>
-            <ng-gauge type="full" thick="18" value="82.2" cap="round" label="Sales" foreground-color="#ffcc66" background-color="rgba(255,255,255,0.3)" append="%"></ng-gauge>
-        </div>
-        <div class="item">
-            <h2>Round</h2>
-            <ng-gauge type="arch" thick="14" value="58.3" cap="round" label="Pressure" foreground-color="#ffcc66" background-color="rgba(255,255,255,0.3)" append="Pa"></ng-gauge>
-        </div>
-        <div class="item">
-            <h2>Flat</h2>
-            <ng-gauge type="arch" thick="14" value="54.4" cap="butt" label="Usage" foreground-color="#ffcc66" background-color="rgba(255,255,255,0.3)" append="GB"></ng-gauge>
-        </div>
-        <div class="item">
-            <h2>Other</h2>
-            <p>There are many other customizations, you can do to match your needs.</p>
-        </div>
-        <div class="item">
-            <h2>No Label</h2>
-            <ng-gauge type="arch" thick="11" value="66" cap="butt" foreground-color="#ffcc66" background-color="rgba(255,255,255,0.3)" append="kW"></ng-gauge>
-        </div>
-        <div class="item">
-            <h2>Prepend</h2>
-            <ng-gauge type="arch" thick="11" value="74.7" cap="butt" label="Current" foreground-color="#ffcc66" background-color="rgba(255,255,255,0.3)" prepend="$"></ng-gauge>
-        </div>
-        <div class="item">
-            <h2>No Append</h2>
-            <ng-gauge type="arch" thick="11" value="40" cap="butt" foreground-color="#ffcc66" background-color="rgba(255,255,255,0.3)"></ng-gauge>
-        </div>
-        <div class="item">
-            <h2>CONTRIBUTE</h2>
-            <p style="text-align:left;">
-                angular-gauge is an ongoing development project.
-                <br>
-                <br> You can contribute <a style="color:#ffcc66;" href="http://github.com/ashish-chopra/angular-gauge">here</a>.
-            </p>
-        </div>
+          <div class="row">
+            <div class="col-md-3">
+              <div>
+              <div>
+              <highchart id="container-rpm" config="chartConfig" style="width:250px;height:250px;float:left">
+              </div>
+              <br><br>
+              <div>
+              <highchart id="container-torque" config="chartConfig" style="width:250px;height:250px;">
+              </div>
+                
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div>
+              <highchart id="container-speed" config="chartConfig" style="width:250px;height:250px;">
+              </div>
+            </div>
+
+            <div class="col-md-5">
+                 <div class="progress progress-bar-vertical">
+                 <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="height: 50%;">
+                 <span class="sr-only">60% Complete</span>
+             </div>
+           </div>
+            </div>
+            </div>
 
     </div>
 
-   
-    </div>
-   <!-- Tab Debug-->
+     <!-- Tab Debug-->
    <div id="Debug" class="tabcontent">
+
+
      <div id="sTitle" style="margin: 20px;
                              font-size: 20px;
                              font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;" > Data Received </div>
@@ -257,7 +222,57 @@
          // x = res;
       });
 
-       var chart = new Highcharts.Chart({
+ //This is not a highcharts object. It just looks a little like one!
+var chartConfig = {
+
+  options: {
+      //This is the Main Highcharts chart config. Any Highchart options are valid here.
+      //will be overriden by values specified below.
+      chart: {
+          type: 'bar'
+      },
+      tooltip: {
+          style: {
+              padding: 10,
+              fontWeight: 'bold'
+          }
+      }
+  },
+  //The below properties are watched separately for changes.
+
+  //Series object (optional) - a list of series using normal Highcharts series options.
+  series: [{
+     data: [10, 15, 12, 8, 7]
+  }],
+  //Title configuration (optional)
+  title: {
+     text: 'Hello'
+  },
+  //Boolean to control showing loading status on chart (optional)
+  //Could be a string if you want to show specific loading text.
+  loading: false,
+  //Configuration for the xAxis (optional). Currently only one x axis can be dynamically controlled.
+  //properties currentMin and currentMax provided 2-way binding to the chart's maximum and minimum
+  xAxis: {
+  currentMin: 0,
+  currentMax: 20,
+  title: {text: 'values'}
+  },
+  //Whether to use Highstocks instead of Highcharts (optional). Defaults to false.
+  useHighStocks: false,
+  //size (optional) if left out the chart will default to size of the div or something sensible.
+  size: {
+   width: 400,
+   height: 300
+  },
+  //function (optional)
+  func: function (chart) {
+   //setup some logic for the chart
+  }
+};
+
+
+       var chart = Highcharts.chart('container', {
           chart: {
               renderTo: 'container',
               type: 'column'
@@ -305,11 +320,184 @@
               }]
           }); 
 
-// ////////////////////////////////////////////////////////////////////////////////////////
- 
-
 
 // ////////////////////////////////////////////////////////////////////////////////////////
+$(function () {
+
+    var gaugeOptions = {
+
+        chart: {
+            type: 'solidgauge',
+            backgroundColor: '#F6F6F6'
+
+        },
+
+        title: null,
+
+        pane: {
+            center: ['50%', '60%'], 
+            borderWidth: 0,
+            size: '80%',
+            startAngle: -90,
+            endAngle: 90, 
+            background: {
+                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#FFF',
+                innerRadius: '60%',
+                outerRadius: '100%',
+                shape: 'arc'
+            }
+        },
+
+        tooltip: {
+            enabled: false
+        },
+
+        // the value axis
+        yAxis: {
+            stops: [
+                [0.1, '#55BF3B'], // green
+                [0.5, '#DDDF0D'], // yellow
+                [0.9, '#DF5353'] // red
+            ],
+            lineWidth: 0,
+            minorTickInterval: null,
+            tickAmount: 2,
+            title: {
+                y: -70
+            },
+            labels: {
+                y: 16
+            }
+        },
+
+        plotOptions: {
+            solidgauge: {
+                dataLabels: {
+                    y: 5,
+                    borderWidth: 0,
+                    useHTML: true
+                }
+            }
+        }
+    };
+
+    // The RPM gauge
+    var chartRpm = Highcharts.chart('container-rpm', Highcharts.merge(gaugeOptions, {
+        yAxis: {
+            min: 0,
+            max: 5,
+            title: {
+                text: 'RPM'
+            }
+        },
+
+        series: [{
+            name: 'RPM',
+            data: [1],
+            dataLabels: {
+                format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+                    ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y:.1f}</span><br/>' +
+                       '<span style="font-size:12px;color:silver">* 1000 / min</span></div>'
+            },
+            tooltip: {
+                valueSuffix: ' revolutions/min'
+            }
+        }]
+
+    }));
+
+        // Bring life to the dials
+    setInterval(function () {
+        // Speed
+        var point,
+            newVal,
+            inc;
+        // RPM
+        if (chartRpm) {
+            point = chartRpm.series[0].points[0];
+            point.update(4);
+        }
+    }, 2000);
+
+    // The torque gauge
+    var chartTorque = Highcharts.chart('container-torque', Highcharts.merge(gaugeOptions, {
+        yAxis: {
+            min: 0,
+            max: 5,
+            title: {
+                text: 'Torque'
+            }
+        },
+
+        series: [{
+            name: 'RPM',
+            data: [1],
+            dataLabels: {
+                format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+                    ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y:.1f}</span><br/>' +
+                       '<span style="font-size:12px;color:silver">* 1000 / min</span></div>'
+            },
+            tooltip: {
+                valueSuffix: ' revolutions/min'
+            }
+        }]
+
+    }));
+
+
+       // Bring life to the dials
+    setInterval(function () {
+        // Speed
+        var point,
+            newVal,
+            inc;
+        // RPM
+        if (chartTorque) {
+            point = chartTorque.series[0].points[0];
+            point.update(4);
+        }
+    }, 2000);
+ // The speed gauge
+    var chartspeed = Highcharts.chart('container-speed', Highcharts.merge(gaugeOptions, {
+        yAxis: {
+            min: 0,
+            max: 5,
+            title: {
+                text: 'Speed'
+            }
+        },
+
+        series: [{
+            name: 'Speed',
+            data: [1],
+            dataLabels: {
+                format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+                    ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y:.1f}</span><br/>' +
+                       '<span style="font-size:12px;color:silver">* 1000 / min</span></div>'
+            },
+            tooltip: {
+                valueSuffix: ' revolutions/min'
+            }
+        }]
+
+    }));
+
+
+       // Bring life to the dials
+    setInterval(function () {
+        // Speed
+        var point,
+            newVal,
+            inc;
+        // RPM
+        if (chartspeed) {
+            point = chartspeed.series[0].points[0];
+            point.update(4);
+        }
+    }, 2000);
+
+
+});
 
 
 function reload(){
