@@ -1,9 +1,17 @@
 /*Http server*/
-var app = require('express')();
+var express = require("express");
+var app = express();
 var http = require('http').Server(app);
+var path = __dirname + '/';
 var io = require('socket.io')(http);
-// var data = express();
+var router = express.Router();
 /*Socket IO*/
+router.use("/",function(req,res){
+  res.sendFile(path + "index.html");
+});
+
+app.use("/",router);
+app.use(express.static(__dirname + '/public'));
 
 /*Serial Port Intitiate*/
 var SerialPort = require('serialport');
@@ -11,7 +19,7 @@ var SerialPort = require('serialport');
 /*Validation Flag*/
 var flag_V = 0;
 
-var port = new SerialPort("/dev/ttyACM0", {
+var port = new SerialPort("/dev/ttyUSB0", {
   // baudrate: 9600,
   baudrate: 115200,
   bufferSize: 1 ,
@@ -70,7 +78,7 @@ port.on('data', function (data) {
   	// 	console.log("Packet Number :" + no_pkt);
   	// }
 
-  	if(data == "]"){ 	
+  	if(data == "$"){ 	
   		myPrint(str);
   		count = 0;
   		io.emit('chat message', str);								//send msg to web interface.
@@ -106,8 +114,13 @@ io.on('connection', function(socket){
 
 http.listen(3000, function(){
   console.log('listening on :3000');
+  console.log('--------------------------------------------------------------');
+  console.log('-------------------------TEAM VEGA----------------------------');
+  console.log('--------------------------------------------------------------');
+
 });
 
 
+
 /*-----------------------------------*/
- // data.use(express.static(__dirname + '/js'));
+// app.use(express.static('js')) // data.use(express.static(__dirname + '/js'));
