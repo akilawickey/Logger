@@ -124,7 +124,7 @@
       }
       #temp{
 
-      position: absolute; /*newly added*/
+      position: absolute;
       z-index: 999;  
       }
     </style>
@@ -165,6 +165,12 @@
         <div style="">
             <nav class="navbar navbar-inverse" style="height: 25">
             <ul class="nav nav-pills" role="tablist" >
+
+            <li role="presentation" class="active"><a href="#">Maximum Temperature <span class="badge">42</span></a></li>
+            <li role="presentation" class="active"><a href="#">Minimum Voltage <span class="badge">42</span></a></li>
+            <li role="presentation" class="active"><a href="#">Maximum Temperature <span id = "max_temp" class="badge"></  span></a></li>
+            <li role="presentation" class="active"><a href="#">Minimum Voltage <span id = "min_voltage" class="badge"></span></a></li>
+             </ul>
             </nav>
 
        </div>
@@ -711,7 +717,7 @@ function Init(){
     </script>
 <style>                        
 </style>
- <div id="map_canvas"></div>
+<div id="map_canvas"></div>
 
 </body>
 </html>
