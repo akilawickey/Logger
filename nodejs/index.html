@@ -99,7 +99,7 @@
       body { height: 100%;}
       #map_canvas { 
       height: 55%;
-      width:20%;
+      width:40%;
       float:right;
       max-width: none;
       bottom: 65%;
@@ -112,10 +112,8 @@
       z-index: 999;  
       }
     </style>
-    <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-9ybVaLyZWhp1n9jSIEJLoxSGYmwRGPs&sensor=true">
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2M8AYQwpG9mPx3SGAqqDUMiUfIuHgrCI&sensor=true">
     </script>
-  
 
   </head>
   <body onload="javascript:Init()" ng-controller="demoController as dm" style="background-color:#262626;color:white;">
@@ -150,10 +148,10 @@
             <nav class="navbar navbar-inverse" style="height: 25">
             <ul class="nav nav-pills" role="tablist" >
 
-            <li role="presentation" class="active"><a href="#">Maximum Temperature <span class="badge">42</span></a></li>
-            <li role="presentation" class="active"><a href="#">Minimum Voltage <span class="badge">42</span></a></li>
-            <li role="presentation" class="active"><a href="#">Maximum Temperature <span id = "max_temp" class="badge"></  span></a></li>
-            <li role="presentation" class="active"><a href="#">Minimum Voltage <span id = "min_voltage" class="badge"></span></a></li>
+            <li role="presentation" class="active"><a href="#">Maximum Temperature <span id = "data_one" class="badge">Loading</span></a></li>
+            <li role="presentation" class="active"><a href="#">Minimum Temperature <span id = "data_two" class="badge">Loading</span></a></li>
+            <li role="presentation" class="active"><a href="#">Maximum Voltage <span id = "data_three" class="badge">Loading</  span></a></li>
+            <li role="presentation" class="active"><a href="#">Minimum Voltage <span id = "data_four" class="badge">Loading</span></a></li>
              </ul>
             </nav>
 
@@ -201,7 +199,33 @@
     </div>
     <div id="home" class="tabcontent">
 
+       <!--  <div style="">
+            <nav class="navbar navbar-inverse" style="height: 25">
+            <ul class="nav nav-pills" role="tablist" >
+
+            <li role="presentation" class="active"><a href="#">Maximum Temperature <span id = "data_one_home" class="badge">42</span></a></li>
+            <li role="presentation" class="active"><a href="#">Minimum Temperature <span id = "data_two_home" class="badge">42</span></a></li>
+            <li role="presentation" class="active"><a href="#">Maximum Voltage <span id = "data_three_home" class="badge"></  span></a></li>
+            <li role="presentation" class="active"><a href="#">Minimum Voltage <span id = "data_four_home" class="badge"></span></a></li>
+             </ul>
+            </nav>
+
+       </div> -->
+
     <div class="container">
+
+     <div style="">
+            <nav class="navbar navbar-inverse" style="height: 25">
+            <ul class="nav nav-pills" role="tablist" >
+
+            <li role="presentation" class="active"><a href="#">Maximum Temperature <span id = "data_one_home" class="badge">Loading</span></a></li>
+            <li role="presentation" class="active"><a href="#">Minimum Temperature <span id = "data_two_home" class="badge">Loading</span></a></li>
+            <li role="presentation" class="active"><a href="#">Maximum Voltage <span id = "data_three_home" class="badge">Loading</  span></a></li>
+            <li role="presentation" class="active"><a href="#">Minimum Voltage <span id = "data_four_home" class="badge">Loading</span></a></li>
+             </ul>
+            </nav>
+
+       </div>
           <div class="row">
             <div class="col-md-3">
               <div>
@@ -232,7 +256,7 @@
            </div>
             </div>
 
-            <div class="col-md-1"> 
+     <!--        <div class="col-md-1"> 
                 <div class="container">
                     <div class="row">
                       <ul class="nav nav-pills" role="tablist" >
@@ -256,7 +280,7 @@
                       </ul>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             </div>
 
@@ -297,12 +321,14 @@
     var can;
     var l1;
     var l2;
+    var longt = 6.92;
+    var lati = 79.8;
 
         var max_Temp;
         var min_vol;
         var min_Temp;
         var max_vol;
-
+       
     var socket = io();
       // $('form').submit(function(){
     // socket.emit('chat message', reload());
@@ -324,6 +350,7 @@
             x = arr4;
             max_vol = Math.max.apply(Math, x);
             min_vol = Math.min.apply(Math, x);
+           
             arr4 = [];
         }else if(res[3] == 'T'){
           y = [];  
@@ -336,6 +363,7 @@
           y = arr3;
           max_Temp = Math.max.apply(Math, y);
           min_Temp = Math.min.apply(Math, y);
+          
           arr3 = [];
         }else if(res[3] == 'C'){
           can_l = res[4]; 
@@ -356,41 +384,54 @@
           }
         }else if(res[3] == 'G'){
           // console.log(res[4]);
-            l1 = res[4];
-            l2 = res[5];
+          l1 = res[4]/10000000;
+          l2 = res[5]/10000000;
+          gmap(l1,l2);
+
+          console.log(l1);
+          console.log(l2);
+
+            
         }
 
+        longt = l1;
+        lati = l2;
    
         var percen = Math.round((max_vol/4000)*100);
         var data = y[1] + " ";
         // alert(parseInt(percen)); 
         // var percen = 60;
                 $('#test').append($('<li>').text(x));
-                $("#msg").empty();
-                $("#msg").text(res[3]);     // this will set the packet number
+                $("#msg").empty();  
+                $("#msg").text(res[3]);  
+                $("#msg").append(' '+res[2]); 
+                   // this will set the packet number
                      // Geocode an address.
             
                 $("#min_voltage").text(min_vol);  
                 $("#max_temp").text(max_Temp);  
+
                 $("#data_one").text(max_Temp);  
                 $("#data_two").text(min_Temp);  
                 $("#data_three").text(max_vol);  
                 $("#data_four").text(min_vol);  
+
+                $("#data_one_home").text(max_Temp);  
+                $("#data_two_home").text(min_Temp);  
+                $("#data_three_home").text(max_vol);  
+                $("#data_four_home").text(min_vol);  
+
                 $("#theprogressbar").css("height", parseInt(percen));
                 // $('#theprogressbar').attr('width',max_Temp+'%');
                 // alertify.notify('packet number - '+data, 'success', 1, function(){  console.log('dismissed'); });
                 // $('#theprogressbar').attr('aria-valuenow', max_vol).css('width',max_vol);
                  // function initialize() {
-                    var mapOptions = {
-                      center: new google.maps.LatLng(l1, l2),
-                      zoom: 8,
-                      mapTypeId: google.maps.MapTypeId.ROADMAP
-                    };
-                    var map = new google.maps.Map(document.getElementById("map_canvas"),
-                        mapOptions);
+                  // console.log(l1/10000000);
+                  // console.log(l2/10000000);
+                   
       // }
 // 
-                  // $("#msg").text(res[1]));
+        // $("#msg").text(res[1]));
         // $('#messages').append($('<li>').text(msg));
         // $('#test').append($('<li>').text(msg));
         // $('#test').append($('<li>').text(res));
@@ -699,6 +740,26 @@ function Init(){
   
 }
      
+  </script>
+  <script type="text/javascript">
+      function gmap(l1,l2) {
+
+        if((l1 == 0)&&(l2==0)){
+
+          l1=6.929912;
+          l2= 79.861694;
+
+        }
+
+        var mapOptions = {
+          center: new google.maps.LatLng(l1, l2),
+          zoom: 40,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map_canvas"),
+            mapOptions);
+
+      }
     </script>
 <style>                        
 </style>
