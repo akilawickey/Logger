@@ -346,25 +346,29 @@ if __name__ == "__main__":
 		# Xbee1 = "USB VID:PID=0403:6001 SNR=AH03I7PP"
 		Flight = "USB VID:PID=0403:6001 SNR=AM016X60"
 		Xbee =   "USB VID:PID=0403:6001 SNR=AH03I79P"
-		Device = "USB VID:PID=1a86:7523"
+		Device = "Linux 3.13.0-24-generic ehci_hcd EHCI Host Controller 0000:00:1a.0"
+		Device_ = 'Linux 3.13.0-24-generic xhci_hcd xHCI Host Controller 0000:02:00.0'
+		VID = 'USB VID:PID=1a86:7523'
 		flag_p = 0
 
 		#print(list(serial.tools.list_ports.comports()))s
 		for a in range(0,len(list1) ):
-		 	if(Device == list1[a][2]):
-		 		if(flag_p == 0):	
-		  			DEVICE_1 = list1[a][0]
-		  			flag_p = 1
+		 	if((Device == list1[a][1]) & (VID == list1[a][2]) ):
+		  		BATTERY = list1[a][0]
 				
-		 	if(Xbee == list1[a][2]):
+		 	if( (Xbee == list1[a][2]) & (Device == list1[a][1]) ):
 		  		XBEE = list1[a][0]
 
 		  	if(Flight == list1[a][2]):
 		  		FLIGHT = list1[a][0]
 
-		 	if(Device == list1[a][2]):
-		  		DEVICE_2 = list1[a][0]
+		 	if(Device_ == list1[a][1]):
+		  		CAN = list1[a][0]
 
+		print 'Battery ' + BATTERY
+		print 'can '+CAN
+		print 'xbee '+XBEE
+		print 'Flight '+FLIGHT
 		##################################################################################				
 		ser2 = serial.Serial(XBEE, 115200, timeout=2, xonxoff=True, rtscts=True, dsrdtr=False ) #Tried with and without the last 3 parameters, and also at 1Mbps, same happens.
 		ser2.flushInput()
@@ -384,47 +388,6 @@ if __name__ == "__main__":
 		print "-----------------------------------------------"
 		#xbee = XBee.XBee("/dev/ttyUSB0") 
 		################################################
-		IF = 1 # Debuging purposes
-		if IF:
-			print("VEGA logging data ...")
-			print "-----------------------------------------------"
-			print "Xbee : " + XBEE
-			print "Flight : " + FLIGHT
-			print "Device_1 : " + DEVICE_1
-			print "Device_2 : " + DEVICE_2
-			print "-----------------------------------------------"
-			try:
-				print "test1"
-				t_device_1 = Thread(target=findPorts, args=(DEVICE_1,115200,))
-				t_device_2 = Thread(target=findPorts, args=(DEVICE_2,115200,))
-			except:
-				print "Unexpected error:", sys.exc_info()[0]
-   #  			raise
-			# t_prg = Thread(target=progress, args=())
-			# t_prg.start()
-
-			t_device_1.start()
-			t_device_2.start()
-			
-			print 'Before sleep'
-
-			time.sleep(10)
-
-			print "test"
-
-			if(t_device_1.isAlive() & t_device_2.isAlive()):
-			 	print "COM port ERROR"
-
-			if(t_device_1.isAlive()):
-				CAN = DEVICE_2
-				BATTERY = DEVICE_1
-				print "CAN : " + DEVICE_2
-				print "Battery : " + DEVICE_1
-			else:
-				CAN = DEVICE_1
-				BATTERY = DEVICE_2
-				print "CAN : " + DEVICE_1
-				print "Battery : " + DEVICE_2
 
 		################################################
 
