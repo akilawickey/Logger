@@ -101,9 +101,9 @@ def GPS(board):
 	            lock.acquire()
 		    if q.full():
 			q.get()
-			print 'Qeue reset'
+			print 'Data droped GPS'
 	            else:
-			print 'Data added.'
+			print 'Data added GPS.'
 			q.put(gps_data)
 		    lock.release()
 		            
@@ -137,9 +137,9 @@ def Accelerometer(board):
 		# q.put(data)
 		if q.full():
 				q.get()
-				print 'Qeue reset'
+				print 'Data droped XYZ'
 		else:
-				print 'Data added.'
+				print 'Data added XYZ.'
 		q.put(data)
 
 		lock.release()
@@ -236,7 +236,7 @@ def read_battery(path_can,Boud):
 			lock.acquire()
 			if q.full():
 				q.get()
-				print 'Data droped B'
+				print 'Data droped : BATTERY'
 			q.put(line)
 			lock.release()
 
@@ -290,7 +290,7 @@ def read_can(path_can,Boud):
 		lock.acquire()
 		if q.full():
 			q.get()
-			print 'Qeue reset'
+			print 'Data droped : CAN'
 		send_C = 'C,'+send_C
 		q.put(send_C)
 		# q.put(t)
@@ -305,36 +305,22 @@ def findPorts(port,boud):
 
 	try:
 		data_raw = ser_batt.readline()
-
 		for index in range(len(data_raw)):
 	   		if(data_raw[index] == "#"):
 	   			return True
-
 		return False
 	except:
 		print 'Com port Busy'
 
-def progress():
-	prg = '#'
-	while True:
-		prg = prg + ' #'
-		print	prg+"\r"
-		time.sleep(0.5)	
 #----------------------------------------------------------------------
 
 if __name__ == "__main__":
 	q = Queue.Queue(maxsize=10)
-	# files = os.listdir(source)
-	# fifopath = "/home/vega/Desktop/logger"
-	# os.mkfifo(fifopath)
-	# fifo = open(fifopath,"w")
 
 	XBEE = "/dev/ttyUSB0"
 	BATTERY = "/dev/ttyUSB0"
 	CAN = "/dev/ttyUSB0"
 	FLIGHT = "/dev/ttyUSB0"
-	DEVICE_1 = "/dev/ttyUSB0"
-	Device_2 = "/dev/ttyUSB1"
 	path_can = "/dev/ttyUSB0"
 
 	try:
@@ -349,7 +335,6 @@ if __name__ == "__main__":
 		Device = "Linux 3.13.0-24-generic ehci_hcd EHCI Host Controller 0000:00:1a.0"
 		Device_ = 'Linux 3.13.0-24-generic xhci_hcd xHCI Host Controller 0000:02:00.0'
 		VID = 'USB VID:PID=1a86:7523'
-		flag_p = 0
 
 		#print(list(serial.tools.list_ports.comports()))s
 		for a in range(0,len(list1) ):
@@ -365,17 +350,20 @@ if __name__ == "__main__":
 		 	if(Device_ == list1[a][1]):
 		  		CAN = list1[a][0]
 
-		print 'Battery ' + BATTERY
-		print 'can '+CAN
-		print 'xbee '+XBEE
-		print 'Flight '+FLIGHT
-		##################################################################################				
+		print "\n----------Com Port Configuration--------------"
+		print 'Battery 	:'+BATTERY
+		print 'can 		:'+CAN
+		print 'xbee 		:'+XBEE
+		print 'Flight 		:'+FLIGHT +'\n'
+		# ----------Open Xbee Serial Port----------------------			
 		ser2 = serial.Serial(XBEE, 115200, timeout=2, xonxoff=True, rtscts=True, dsrdtr=False ) #Tried with and without the last 3 parameters, and also at 1Mbps, same happens.
 		ser2.flushInput()
 		ser2.flushOutput()
 
+		# ------------Open Flight Board Serial Port-------------
 		path_ = '/dev/ttyUSB1'
     		# board = MultiWii(path_)
+
     		board = MultiWii(FLIGHT)
     		t_flight = Thread(target=Accelerometer, args=(board,))
     		t_flight_G = Thread(target=GPS, args=(board,))
@@ -386,54 +374,33 @@ if __name__ == "__main__":
 		if t_flight.isAlive():
 		   		print "Flight started    state : Alive"
 		print "-----------------------------------------------"
-		#xbee = XBee.XBee("/dev/ttyUSB0") 
-		################################################
 
-		################################################
-
-
+		# ------------Start Main Threads-------------------------
 		try:
-		   print "-----------------------------------------------"
-		   # t_bat = Thread(target=read_battery, args=('/dev/ttyUSB3',9600))
+
 		   t_bat = Thread(target=read_battery, args=(BATTERY,9600))
 		   t_can = Thread(target=read_can, args=(CAN,115200))
 		   t_bat.start()
 		   t_can.start()
-		   # t_bat.join()
-		   # t_can.join()
-
-		   # if t_bat.isAlive():
-		   # 		print "Alive"
 
 		   count=0
+		   past_load=''
 		   while True:
 		   		count = count + 1
-		   		# q.get()
-		   		# q.get()
-		   		# q.get()
-		   		# q.get()
 		   		load = q.get()
 		   		x = len(load)
 
 		   		# print "length : "+str(x)+" Size : "+str(sys.getsizeof(q.get()))+" bytes Pht No : "+str(count)+"\n"+ q.get()
 		   		# print q.get()
+
 		   		send = "####,"+str(x)+","+str(count)+","+load+"!!"
-		   		# print send
-		   		ser2.write(send)
+		   		print send
+		   		if load != past_load:
+		   			ser2.write(send)
+		   		past_load = load
 		   		
 		   		# board.getData(MultiWii.ATTITUDE)
 		   		# head = board.attitude['heading']
-
-		   		# print str(head)
-		   		# print "Main"
-		   		# time.sleep(1)
-		   		# if(count % 10 == 0):
-		   		# 	# lock.acquire()
-		   		# 	# q.queue.clear()
-		   		# 	# lock.release()
-		   		# 	# print "Cleared"
-		   		# 	print str(head)
-		   			
 
 		except KeyboardInterrupt:
 				print "closing ports"
