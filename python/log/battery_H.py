@@ -69,9 +69,12 @@ class bat(object):
 					if x == '\t':
 						# print str(line)
 						line = 'T,' + line
+						# data_H.data = ''
 						data_H.CVS_name_bat	= data_H.CVS_name_bat_temp  
+
 						csv_write_battery = time1 + str(line)
-						data_H.data = csv_write_battery
+						data_H.data = csv_write_battery.split(',')
+						# print str(data_H.data)
 						data_H.csv_writer(d_obj)
 
 						break
@@ -86,16 +89,20 @@ class bat(object):
 						line = 'B,' + line
 						break
 			#---------------------------------------
-				# print no_of_bat
+				print no_of_bat
 				if no_of_bat == '1':
+					# data_H.data = ''
+					csv_write_battery = time1 + str(line)
 					data_H.CVS_name_bat	= data_H.CVS_name_bat_1_vol
-					csv_write_battery = time1 + str(line)
-					data_H.data = csv_write_battery
+					data_H.data = csv_write_battery.split(',')
 					data_H.csv_writer(d_obj)
+
 				if no_of_bat == '2':
-					data_H.CVS_name_bat	= data_H.CVS_name_bat_2_vol
+
+					# data_H.data = ''
 					csv_write_battery = time1 + str(line)
-					data_H.data = csv_write_battery
+					data_H.CVS_name_bat	= data_H.CVS_name_bat_2_vol
+					data_H.data = csv_write_battery.split(',')
 					data_H.csv_writer(d_obj)
 
 				data_H.lock.acquire()
