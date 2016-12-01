@@ -3,6 +3,7 @@
                          REAL TIME BACK END FOR MONITORING CAR DATA
  -->
 <!doctype html>
+
 <html>
   <head>
     <title>VEGA </title>
@@ -24,7 +25,7 @@
 
 
 <!-- JavaScript -->
-<script src="//cdn.jsdelivr.net/alertifyjs/1.8.0/alertify.min.js"></script>
+    <!-- <script src="//cdn.jsdelivr.net/alertifyjs/1.8.0/alertify.min.js"></script> -->
 
 <!-- CSS -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.8.0/css/alertify.min.css"/>
@@ -39,21 +40,22 @@
 <!-- Resources -->
 
     <!-- Local SPEEDO METER -->
-
+  <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2M8AYQwpG9mPx3SGAqqDUMiUfIuHgrCI&sensor=true"> -->
+     </script>
 
 
     <!--     <link href="CSS/battryChart.css" rel="stylesheet"> -->
 
     <!-- local JS files -->
     <script type="text/javascript" src="battryChart.js"></script>
-    <script type="text/javascript">
+   <!--  <script type="text/javascript">
       var myapp = angular.module('myapp', ["highcharts-ng"]);
-    </script>
+    </script> -->
 
     <style>
-      body  {
-/*        background-image: url("img/vega.jpg");
-        background-color: #cccccc;*/
+     body{ 
+      padding-top:1px;
+      background-image:url("../public/back.jpg");
       }
       .navbar{
        min-height:20px; 
@@ -98,13 +100,10 @@
       html { height: 100%; }
       body { height: 100%;}
       #map_canvas { 
-      height: 55%;
-      width:40%;
-      float:right;
-      max-width: none;
-      bottom: 65%;
-      right: 1%;
-      width: 300px;
+
+        height: 100%;
+        
+      }
       /*border: 3px solid #73AD21;*/
       }
       #temp{
@@ -123,94 +122,169 @@
     <div class="container-fluid">
       <div class="navbar-header">
         <a class="navbar-brand" href="index.html">VEGA</a>
-        <img src="/vega.jpg" />
+        <!-- <img src="public/vega.jpg" /> -->
       </div>
 
       <ul class="nav navbar-nav">
         <li class="active"><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'home')">Home</a></li>
         <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'battery')">Battery</a></li>
-        <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'data')">Overall</a></li>
+        <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'data')">CAN Message</a></li>
         <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'Debug')">Debug</a></li>
       </ul>
 
     </div>
   </nav>
-
- 
-
-                   
+            
       </div>
     <!-- Tab Paris -->
 
       <div id="battery" class="tabcontent">
 
         <div style="">
-            <nav class="navbar navbar-inverse" style="height: 25">
+            <nav class="navbar navbar-inverse" style="height: 30">
             <ul class="nav nav-pills" role="tablist" >
 
             <li role="presentation" class="active"><a href="#">Maximum Temperature <span id = "data_one" class="badge">Loading</span></a></li>
             <li role="presentation" class="active"><a href="#">Minimum Temperature <span id = "data_two" class="badge">Loading</span></a></li>
-            <li role="presentation" class="active"><a href="#">Maximum Voltage <span id = "data_three" class="badge">Loading</  span></a></li>
+            <li role="presentation" class="active"><a href="#">Maximum Voltage <span id = "data_three" class="badge">Loading</span></a></li>
             <li role="presentation" class="active"><a href="#">Minimum Voltage <span id = "data_four" class="badge">Loading</span></a></li>
+            <li role="presentation" class="active"><a href="#">Max Currnt <span id = "data_five" class="badge">Loading</span></a></li>
+
+
              </ul>
             </nav>
 
        </div>
-        <div class="alert alert-success" style="width: 30%">
-            <a href="#" id = "msg" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>Success!</strong> Data Recieved.
-        </div>
+          <div class="alert alert-success" style="width: 30%;">
+              <span>
+              <a href="#" id = "msg" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <strong>Success!</strong> Data Recieved.
+              </span>
+          </div>    
+
 
         <div class = "row">
-          <div class= "col-md-1">
-              <div class="list-group nopadding" style="float:left;width: 100%;font-size:12px;white-space: nowrap;">          
-              <a href="#" onclick="battery_caller(x[0]);" class="list-group-item">Battery 1</a>
-              <a href="#" onclick="battery_caller(x[1]);" class="list-group-item">Battery 2</a>
-              <a href="#" class="list-group-item">Battery 3</a>
-              <a href="#" class="list-group-item">Battery 4</a>
-              <a href="#" class="list-group-item">Battery 5</a>
-              <a href="#" class="list-group-item">Battery 6</a>
-              <a href="#" class="list-group-item">Battery 7</a>
-              <a href="#" class="list-group-item">Battery 8</a>
-              <a href="#" class="list-group-item">Battery 9</a>
-              <a href="#" class="list-group-item">Battery 10</a>  
-              <a href="#" class="list-group-item">Battery 11</a>
-              <a href="#" class="list-group-item">Battery 12</a>
-
+            <div class= "col-md-1">
+                <div class="list-group nopadding" style="float:left;width: 100%;font-size:12px;white-space: nowrap;">          
+                    <a onclick="battery_caller(1);" class="list-group-item">Battery 1</a>
+                    <a onclick="battery_caller(2);" class="list-group-item">Battery 2</a>
+                    <a href="" class="list-group-item">Battery 3</a>
+                    <a href="#" class="list-group-item">Battery 4</a>
+                    <a href="#" class="list-group-item">Battery 5</a>
+                    <a href="#" class="list-group-item">Battery 6</a>
+                    <a href="#" class="list-group-item">Battery 7</a>
+                    <a href="#" class="list-group-item">Battery 8</a>
+                    <a href="#" class="list-group-item">Battery 9</a>
+                    <a href="#" class="list-group-item">Battery 10</a>  
+                    <a href="#" class="list-group-item">Battery 11</a>
+                    <a href="#" class="list-group-item">Battery 12</a>
+                </div>
+            </div>
+             <div class= "col-md-6 nopadding">
+                     <!--   battry Chart -->
+                    <div id="battryChart nopadding" style="width: 100%;">
+                    <div  id="container" style="min-width: 310px;height: 400px; ">
+            </div>
+            </div>
+            </div>
+            <div class= "col-md-5 nopadding">
+                <div id="temp" style="width: 97%;"></div>
+            </div>
         </div>
-          </div>
-           <div class= "col-md-6 nopadding">
-                   <!--   battry Chart -->
-              <div id="battryChart nopadding" style="width: 100%;">
-              <div  id="container" 
-              style="min-width: 310px;height: 400px; ">
-              </div>
-          </div>
-          </div>
-          <div class= "col-md-5 nopadding">
-              <div id="temp" style="width: 97%;"></div>
-          </div>
+        <div class = "row">
+        <center>
+
+        <button type="button" class="btn btn-success" onclick="max_up();" style="width: 10%;">Max Up</button>
+        <button type="button" class="btn btn-success" onclick="max_down();" style="width: 10%;">Max Down</button>
+        <button type="button" class="btn btn-success" onclick="min_up();" style="width: 10%;">Min Up</button>
+        <button type="button" class="btn btn-success" onclick="min_down();" style="width: 10%;">Min Down</button>
+
+        </center>
         </div>
       </div>
+
+  <div id="data" class="tabcontent">
+
+      <span>
+       <ul class="list-group" style="width: 12%;float:left;">
+      </ul>
+      <ul class="list-group" style="width: 20%;float:left;">
+        <li class="list-group-item list-group-item-success">IGBT 1</li>
+        <li class="list-group-item list-group-item-success">IGBT 2</li>
+        <li class="list-group-item list-group-item-success">IGBT 3</li>
+        <li class="list-group-item list-group-item-danger">Motor Temperature</li>
+        <li class="list-group-item list-group-item-danger">Heat Sink Temperature</li>
+        <li class="list-group-item list-group-item-info">VS</li>
+        <li class="list-group-item list-group-item-info">IS</li>
+        <li class="list-group-item list-group-item-warning">BUS Currnt</li>
+        <li class="list-group-item list-group-item-warning">BUS V1</li>
+        <li class="list-group-item list-group-item-warning">BUS V2</li>
+        <li class="list-group-item list-group-item-warning">Motor Power</li>
+
+      </ul>
+      <ul class="list-group" style="width: 10%;float:left;">
+        <li id = "can0_1" class="list-group-item list-group-item-success">0</li>
+        <li id = "can1_1" class="list-group-item list-group-item-success">0</li>
+        <li id = "can2_1" class="list-group-item list-group-item-success">0</li>
+        <li id = "can3_1" class="list-group-item list-group-item-danger">0</li>
+        <li id = "can4_1" class="list-group-item list-group-item-danger">0</li>
+        <li id = "can5_1" class="list-group-item list-group-item-info">0</li>
+        <li id = "can6_1" class="list-group-item list-group-item-info">0</li>
+        <li id = "can7_1" class="list-group-item list-group-item-warning">0</li>
+        <li id = "can8_1" class="list-group-item list-group-item-warning">0</li>
+        <li id = "can9_1" class="list-group-item list-group-item-warning">0</li>
+        <li id = "can10_1" class="list-group-item list-group-item-warning">0</li>
+
+      </ul>
+      <ul class="list-group" style="width: 2%;float:left;">
+      </ul>
+      <ui class="list-group" style="width: 23%;float:right;"></ui>
+       <ul class="list-group" style="width: 20%;float:left;">
+        <li class="list-group-item list-group-item-success">IGBT 1</li>
+        <li class="list-group-item list-group-item-success">IGBT 2</li>
+        <li class="list-group-item list-group-item-success">IGBT 3</li>
+        <li class="list-group-item list-group-item-danger">Motor Temperature</li>
+        <li class="list-group-item list-group-item-danger">Heat Sink Temperature</li>
+        <li class="list-group-item list-group-item-info">VS</li>
+        <li class="list-group-item list-group-item-info">IS</li>
+        <li class="list-group-item list-group-item-warning">BUS Currnt</li>
+        <li class="list-group-item list-group-item-warning">BUS V1</li>
+        <li class="list-group-item list-group-item-warning">BUS V2</li>
+        <li class="list-group-item list-group-item-warning">Motor Power</li>
+
+      </ul>
+      <ul class="list-group" style="width: 10%;float:left;">
+        <li id = "can0_2" class="list-group-item list-group-item-success">0</li>
+        <li id = "can1_2" class="list-group-item list-group-item-success">0</li>
+        <li id = "can2_2" class="list-group-item list-group-item-success">0</li>
+        <li id = "can3_2" class="list-group-item list-group-item-danger">0</li>
+        <li id = "can4_2" class="list-group-item list-group-item-danger">0</li>
+        <li id = "can5_2" class="list-group-item list-group-item-info">0</li>
+        <li id = "can6_2" class="list-group-item list-group-item-info">0</li>
+        <li id = "can7_1" class="list-group-item list-group-item-warning">0</li>
+        <li id = "can8_1" class="list-group-item list-group-item-warning">0</li>
+        <li id = "can9_1" class="list-group-item list-group-item-warning">0</li>
+        <li id = "can10_1" class="list-group-item list-group-item-warning">0</li>
+
+      </ul>
+      <ui class="list-group" style="width: 23%;float:right;"></ui>
+      </span>    
+      <table id="trip_events" class="table table-sm table-inverse">
+      
+      <tr>
+        <td>Error</td>
+        <td>Messege</td>
+      </tr>
+      </table>
+
+  </div>
 
       <!-- battryChart_end --> 
       <ng-gauge size="200" type="full" thick="5" value="68.2" cap="round" label="Speed"  foreground-color="#131313" background-color="rgba(255,255,255, 0.4)" append="mph"></ng-gauge>
 
     </div>
-    <div id="home" class="tabcontent">
+    <div id="home" class="tabcontent" style="width: 20%;">
 
-       <!--  <div style="">
-            <nav class="navbar navbar-inverse" style="height: 25">
-            <ul class="nav nav-pills" role="tablist" >
-
-            <li role="presentation" class="active"><a href="#">Maximum Temperature <span id = "data_one_home" class="badge">42</span></a></li>
-            <li role="presentation" class="active"><a href="#">Minimum Temperature <span id = "data_two_home" class="badge">42</span></a></li>
-            <li role="presentation" class="active"><a href="#">Maximum Voltage <span id = "data_three_home" class="badge"></  span></a></li>
-            <li role="presentation" class="active"><a href="#">Minimum Voltage <span id = "data_four_home" class="badge"></span></a></li>
-             </ul>
-            </nav>
-
-       </div> -->
 
     <div class="container">
 
@@ -218,15 +292,18 @@
             <nav class="navbar navbar-inverse" style="height: 25">
             <ul class="nav nav-pills" role="tablist" >
 
-            <li role="presentation" class="active"><a href="#">Maximum Temperature <span id = "data_one_home" class="badge">Loading</span></a></li>
-            <li role="presentation" class="active"><a href="#">Minimum Temperature <span id = "data_two_home" class="badge">Loading</span></a></li>
-            <li role="presentation" class="active"><a href="#">Maximum Voltage <span id = "data_three_home" class="badge">Loading</  span></a></li>
-            <li role="presentation" class="active"><a href="#">Minimum Voltage <span id = "data_four_home" class="badge">Loading</span></a></li>
+            <li role="presentation" class="active"><a href="#">Maximum Temp <span id = "data_one_home" class="badge">Loading</span></a></li>
+            <li role="presentation" class="active"><a href="#">Minimum Temp <span id = "data_two_home" class="badge">Loading</span></a></li>
+            <li role="presentation" class="active"><a href="#">Maximum Vol <span id = "data_three_home" class="badge">Loading</span></a></li>
+            <li role="presentation" class="active"><a href="#">Minimum Vol <span id = "data_four_home" class="badge">Loading</span></a></li>
+            <li role="presentation" class="active"><a href="#">Minimum Vol <span id = "data_five_home" class="badge">Loading</span></a></li>
+
+
              </ul>
             </nav>
 
        </div>
-          <div class="row">
+          <div class="row"">
             <div class="col-md-3">
               <div>
               <div>
@@ -247,41 +324,6 @@
               <highchart id="container-rpm" config="chartConfig" style="width:250px;height:220px;float:left">
               </div>
             </div>
-            <div class="col-md-1">
-                 <div class="progress progress-bar-vertical" >
-                  <div id="theprogressbar" class="progress-bar progress-bar-u" 
-                   role="progressbar" aria-valuenow="75%" aria-valuemin="0" 
-                   aria-valuemax="100" style="height: 75%">
-                  </div>
-           </div>
-            </div>
-
-     <!--        <div class="col-md-1"> 
-                <div class="container">
-                    <div class="row">
-                      <ul class="nav nav-pills" role="tablist" >
-                      <li role="presentation" class="active" style="width: 20%;"><a href="#">Maximum Temperature <span id = "data_one" class="badge">21</span></a></li> 
-                      </ul>
-                    </div>
-                    <div class="row">
-                      <ul class="nav nav-pills" role="tablist" >
-                      <li role="presentation" class="active" style="width: 20%;"><a href="#">Minimum Temperature <span id = "data_two" class="badge">21</span></a></li> 
-                      </ul>
-                    </div>
-                    <div class="row">
-                      <ul class="nav nav-pills" role="tablist" >
-                      <li role="presentation" class="active" style="width: 20%;"><a href="#">Maximum Cell Voltage <span id = "data_three" class="badge">21</span></a></li> 
-                      </ul>
-                    </div>
-                    <div class="row">
-                      <ul class="nav nav-pills" role="tablist" >
-                      <li role="presentation" class="active" style="width: 20%;"><a href="#">Minimum Cell Voltage <span id = "data_four" class="badge">21</span></a></li> 
-
-                      </ul>
-                    </div>
-                </div>
-            </div> -->
-
             </div>
 
     </div>
@@ -290,35 +332,57 @@
      <!-- Tab Debug-->
    <!-- Tab Debug-->
 
-    <div id="data" class="tabcontent">
-   </div>
-
+  
    <div id="Debug" class="tabcontent">
-     <div id="sTitle" style="margin: 20px;
+       <div id="sTitle" style="margin: 20px;
+                               font-size: 20px;
+                               font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;" > Data Received 
+       </div>
+       <div id="test" style="margin-left: 80px; 
+                             border: 2px solid black;
+                             border-radius: 10px; 
+                             width:1150px;
+                             height: 200px;
+                             overflow: scroll;
+                             font-size: 18px;
+                             padding-left: 10px;
+                             border-width: 1px;">
+       </div>
+       <div id="sTitle2" style="margin: 20px;
                              font-size: 20px;
-                             font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;" > Data Received </div>
-     <div id="test" style="margin-left: 80px; 
-                           border: 2px solid black;
-                           border-radius: 10px; 
-                           width:1150px;
-                           height: 600px;
-                           overflow: scroll;
-                           font-size: 18px;
-                           padding-left: 10px;
-                           border-width: 1px;"></div>
+                             font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;" > Send Data to Xbee 
+       </div>
+       <div id="test2" style="margin-left: 80px; 
+                               border: 2px solid black;
+                               border-radius: 10px; 
+                               width:1150px;
+                               height: 200px;
+                               overflow: scroll;
+                               font-size: 18px;
+                               padding-left: 10px;
+                               border-width: 1px;">
+        </div>
    </div>
-    <!-- <form action="">
-      <input id="m" autocomplete="off" /><button>Send</button>
-    </form> -->
-
+  
     <script>
-    var x=[];
+
+    var chart;
+    var chat_battery;
+
+
+    var x = [];
     var y = [];
 
     var batt_id;
+    var temp_id;
     var batt_plotter;
+    var temp_plotter;
+
+    var batt_plotter_selector;
+    var temp_plotter_selector;
 
     var batt = [];
+    var temp = [];
     var arr3 = [];
     var can_l = [];
     var can_r = [];
@@ -329,70 +393,158 @@
     var lef_T,right_T;
     var tor;
 
-
+    var max_currnt_all;
     var max_Temp;
     var min_vol;
     var min_Temp;
     var max_vol;
+
+    var range_max;
+    var range_low;
+
+    var can1_igbt1;
+    var can1_igbt2;
+    var can1_motor;
+    var can1_heat; 
+    var can0_igbt1;
+    var can0_igbt2;
+    var can0_motor;
+    var can0_heat; 
+    var can0_igbt;
+    var can_trip_message;
+    var can0_trip_message;
+
+    var bus_currnt1;
+    var bus_voltage1;
+    var bus_voltage2;
+    var trip_event;
+    var bus2_currnt1;
+    var bus2_voltage1;
+    var bus2_voltage2;
+    var trip2_event;
+
+    var morot_power1;
+
+    var str;
+
+    var table = document.getElementById("trip_events");
+
        
     var socket = io();
-      // $('form').submit(function(){
-    // socket.emit('chat message', reload());
-      //   $('#m').val('');
-      //   return false;
-      // });
+
       socket.on('chat message', function(msg){
         var res = msg.split(",");
+              // console.log(res[3]);
 
         // alert(res[3]);
-        if(res[3] == 'B'){
-          batt_id = res[5];
-          if(batt_id == 1){
-                      x[0] = [];
+        if(res[3] == ' B'){
 
-            for(var i=19; i<70; i++) { 
+          batt_id = res[5];
+          batt = [];
+          // console.log(batt_id);
+
+
+          if(batt_id == 1){
+               min_vol = res[8];
+               max_vol = res[7];
+
+               x[0] = [];
+            for(var i=19; i<69; i++) { 
               res[i] = parseInt(res[i], 10);
               batt.push(res[i]);
             } 
                x[0] = batt; 
-              batt = [];
+               if(batt_plotter_selector == 1){
+                // console.log("first battery");
+                  batt_plotter = x[0];
+               }
+               // max_vol[0] = Math.max.apply(Math, x[0]);
+               // min_vol[0] = Math.min.apply(Math, x[0]);
+               // alert(max_vol);
+               // batt = [];
 
           }else if(batt_id == 2){
-               x[1] = [];
+               min_vol = res[8];
+               max_vol = res[7];
 
-            for(var i=19; i<70; i++) { 
+              // console.log(res[7]);
+              x[1] = [];
+
+            for(var i=19; i<69; i++) { 
               res[i] = parseInt(res[i], 10);
               batt.push(res[i]);
             } 
               x[1] = batt;
-              batt = [];
+               if(batt_plotter_selector == 2){
+                // console.log("second battery");
 
+                  batt_plotter = x[1];
+               }
+          }
+          else if(batt_id == 3){
+            
+                max_currnt_all = res[6];
+                // console.log(max_currnt_all);
           }
 
         }else if(res[3] == 'T'){
-          y = [];  
-          for(var i=4; i<25; i++) { 
-            if(res[i] == parseInt(res[i], 10)){
-                 res[i] = parseInt(res[i], 10);
-                 arr3.push(res[i]);
-            }
-          }
-          y = arr3;
-          max_Temp = Math.max.apply(Math, y);
-          min_Temp = Math.min.apply(Math, y);
           
-          arr3 = [];
+          batt_id = res[5];
+          max_Temp =res[13];
+          batt_temp = [];
+          console.log(batt_id);
+
+
+          if(batt_id == 1){
+               // min_vol[0] = ras[7];
+               // max_vol[0] = res[8]; 
+               y[0] = [];
+            for(var i=6; i<26; i++) { 
+              res[i] = parseInt(res[i], 10);
+              batt_temp.push(res[i]);
+            } 
+               y[0] = batt_temp; 
+               if(temp_plotter_selector == 1){
+                console.log("first battery temp");
+                  temp_plotter = y[0];
+                  min_Temp[temp_plotter_selector] = Math.min.apply(Math, y[temp_plotter_selector]);
+                  $("#data_two").text(min_Temp[temp_plotter_selector]);  
+                  chart.yAxis[0].setExtremes(0,1600);
+
+               }
+             
+               // alert(max_vol);
+               // batt = [];
+
+          }else if(batt_id == 2){
+               y[1] = [];
+             
+            for(var i=6; i<26; i++) { 
+              res[i] = parseInt(res[i], 10);
+              batt_temp.push(res[i]);
+            } 
+              y[1] = batt_temp;
+
+               if(temp_plotter_selector == 2){
+                // console.log("second battery temp");
+                  temp_plotter = y[1];
+                  // console.log(temp_plotter);
+                  min_Temp[temp_plotter_selector] = Math.min.apply(Math, y[temp_plotter_selector]);
+                  $("#data_two").text(min_Temp[temp_plotter_selector]);
+                  chart.yAxis[0].setExtremes(0,1600);
+               }
+             
+          }
+
         }else if(res[3] == 'C'){
           can_l = res[4].toString(); 
           part1 = parseInt(res[5]);
-          part2 = parseFloat(res[6]);
+          part2 = parseInt(res[6]);
 
           // console.log(part1+' '+(part2*consta));
           // console.log(part2);
           tor = part1+(part2*consta);
 
-
-    
           if((can_l[0] == "B")&&(can_l[1] == "B")){
             if(tor == 0){
               lef_T=0;
@@ -401,7 +553,7 @@
               lef_T = ((tor));
             }
 
-            console.log("Wheel left"+lef_T);
+             console.log("Wheel left"+lef_T);
           }
           else if((can_l[0] == "B")&&(can_l[1] == "C")){
 
@@ -411,11 +563,152 @@
             }else if(tor>0){
               right_T = 255 - (tor);
             }
+              console.log("Wheel right"+right_T);
+          }else if(res[4] == 'C1IGBT0'){
+
+              can0_igbt1 = res[5];
+              can0_igbt2 = res[6];
+              can0_motor = res[7];
+              can0_heat = res[8];
+
+              can0_trip_message = res[11];
+             
+              var i = 0; 
+              console.log(can0_trip_message);
+              str_1 = "";
+      
+              if(can0_trip_message[0] == 1){
+
+                str_1 = str_1 + " swUnder Voltage Trip ";
+
+              }else if(can0_trip_message[1] == 1){
+                
+                str_1 = str_1 + " sw Over current Trip ";
+
+              }else if(can0_trip_message[2] == 1){
+        
+                str_1 = str_1 + " hw IGBT S/C Trip Zone ";
+
+              }else if(can0_trip_message[3] == 1){
+
+                str_1 = str_1 + " hw Over current Trip zone ";
+
+              }else if(can0_trip_message[4] == 1){
+
+                str_1 = str_1 + " Tripzone fault ";
+
+              }else if(can0_trip_message[8] == 1){
+
+                str_1 = str_1 + " saftey monitoring communication Error ";
+
+              }else if(can0_trip_message[9] == 1){
+
+                str_1 = str_1 + " Resolver Communication Error ";
+
+              }else if(can0_trip_message[10] == 1){
+
+                str_1 = str_1 + " Motor over temperature trip_event ";
+
+              }else if(can0_trip_message[11] == 1){
+
+                str_1 = str_1 + " IGBT over temperature trip ";
+
+              }else {
+
+                str_1 ="";
+
+              }
+              var row = table.insertRow(0);
+              var cell1 = row.insertCell(0);
+              var cell2 = row.insertCell(1);
+              cell1.innerHTML = "Error Messege";
+              cell2.innerHTML = str_1;
 
 
+          }else if(res[4] == 'C1IGBT1'){
 
-            // right_T = ((255 - (part1+(part2*consta)))/14)*100;
-            console.log("Wheel right"+right_T);
+              can1_igbt1 = res[5];
+              can1_igbt2 = res[6];
+              can1_motor = res[7];
+              can1_heat = res[8];
+
+              can_trip_message = res[11];
+             
+              var i = 0; 
+              console.log(can_trip_message);
+              str = "";
+      
+              if(can_trip_message[0] == 1){
+
+                str = str + " swUnder Voltage Trip ";
+
+              }else if(can_trip_message[1] == 1){
+                
+                str = str + " sw Over current Trip ";
+
+              }else if(can_trip_message[2] == 1){
+        
+                str = str + " hw IGBT S/C Trip Zone ";
+
+              }else if(can_trip_message[3] == 1){
+
+                str = str + " hw Over current Trip zone ";
+
+              }else if(can_trip_message[4] == 1){
+
+                str = str + " Tripzone fault ";
+
+              }else if(can_trip_message[8] == 1){
+
+                str = str + " saftey monitoring communication Error ";
+
+              }else if(can_trip_message[9] == 1){
+
+                str = str + " Resolver Communication Error ";
+
+              }else if(can_trip_message[10] == 1){
+
+                str = str + " Motor over temperature trip_event ";
+
+              }else if(can_trip_message[11] == 1){
+
+                str = str + " IGBT over temperature trip ";
+
+              }else {
+
+                str ="";
+
+              }
+              var row = table.insertRow(0);
+              var cell1 = row.insertCell(0);
+              var cell2 = row.insertCell(1);
+              cell1.innerHTML = "Error Messege";
+              cell2.innerHTML = str;
+
+              // console.log(str);
+
+          }else if(res[4] == 'C1VI'){
+
+              bus_currnt1 = res[5];
+              bus_voltage1 = res[6];
+              bus_voltage2 = res[7];
+              trip_event = res[8];
+
+              bus_currnt1 = bus_currnt1/10000;
+              bus_voltage1 = bus_voltage1/100;
+              bus_voltage2 = bus_voltage2/100;
+
+          }else if(res[4] == 'C2VI'){
+
+              bus2_currnt1 = res[5];
+              bus2_voltage1 = res[6];
+              bus2_voltage2 = res[7];
+              trip2_event = res[8];
+
+              bus2_currnt1 = bus2_currnt1/10000;
+              bus2_voltage1 = bus2_voltage1/100;
+              bus2_voltage2 = bus2_voltage2/100;
+
           }
         }else if(res[3] == 'G'){  
           // console.log(res[4]);
@@ -434,29 +727,56 @@
    
         var percen = Math.round((max_vol/4000)*100);
         var data = y[1] + " ";
+
         // alert(parseInt(percen)); 
         // var percen = 60;
-                $('#test').append($('<li>').text(x));
+                // $('#test').append($('<li>').text(x));
                 $("#msg").empty();  
                 $("#msg").text(res[3]);  
                 $("#msg").append(' '+res[2]); 
                    // this will set the packet number
                      // Geocode an address.
             
-                $("#min_voltage").text(min_vol);  
-                $("#max_temp").text(max_Temp);  
+                // $("#min_voltage").text(max_Temp);  
+                // $("#max_temp").text(max_Temp);  
 
                 $("#data_one").text(max_Temp);  
-                $("#data_two").text(min_Temp);  
-                $("#data_three").text(max_vol);  
-                $("#data_four").text(min_vol);  
+                $("#data_three").text(min_vol);  
+                $("#data_four").text(max_vol);  
+              
 
                 $("#data_one_home").text(max_Temp);  
                 $("#data_two_home").text(min_Temp);  
                 $("#data_three_home").text(max_vol);  
                 $("#data_four_home").text(min_vol);  
+                $("#data_five").text(max_currnt_all);  
+                $("#data_five_home").text(max_currnt_all);  
+
 
                 $("#theprogressbar").css("height", parseInt(percen));
+
+                $("#can0_1").text(can0_igbt1);  
+                $("#can1_1").text(can1_igbt1);  
+                $("#can2_1").text(can1_igbt2);  
+                $("#can3_1").text(can1_motor);  
+                $("#can4_1").text(can1_heat); 
+                $("#can7_1").text(bus_currnt1);  
+                $("#can8_1").text(bus_voltage1);  
+                $("#can9_1").text(bus_voltage2);  
+                $("#can10_1").text(trip_event);   
+
+                $("#can0_2").text(can1_igbt1);  
+                $("#can1_2").text(can0_igbt1);  
+                $("#can2_2").text(can0_igbt2);  
+                $("#can3_2").text(can0_motor);  
+                $("#can4_2").text(can0_heat);  
+                $("#can7_1").text(bus2_currnt1);  
+                $("#can8_1").text(bus2_voltage1);  
+                $("#can9_1").text(bus2_voltage2);  
+                $("#can10_1").text(trip2_event);  
+                $("#test").text(res);
+
+
                 // $('#theprogressbar').attr('width',max_Temp+'%');
                 // alertify.notify('packet number - '+data, 'success', 1, function(){  console.log('dismissed'); });
                 // $('#theprogressbar').attr('aria-valuenow', max_vol).css('width',max_vol);
@@ -466,8 +786,7 @@
                    
       // }
 // 
-        // $("#msg").text(res[1]));
-        // $('#messages').append($('<li>').text(msg));
+        // $('#messages').text($('<li>').text(msg));
         // $('#test').append($('<li>').text(msg));
         // $('#test').append($('<li>').text(res));
         // $('#test').append($('<li>').text(int8View));
@@ -520,7 +839,7 @@ var chartConfig = {
   }
 };
 //-------------------------------Battery---------------------------------------------------
-       var chart = Highcharts.chart('container', {
+       chart = Highcharts.chart('container', {
           chart: {
               renderTo: 'container',
               type: 'column'
@@ -532,15 +851,50 @@ var chartConfig = {
                   text: 'Cell voltage levels'
               },
               yAxis: {
-                  range : 2500
+              
+                min: 2500,
+                max: 3500,
+              
+               plotLines: [{
+                    id: 'limit-min',
+                    color: '#FF0000',
+                    dashStyle: 'ShortDash',
+                    width: 2,
+                    value: 3300,
+                    zIndex: 0,
+                    label : {
+                        text : 'min'
+                    }
+                }, {
+                    id: 'limit-max',
+                    color: '#008000',
+                    dashStyle: 'ShortDash',
+                    width: 2,
+                    value: 3400,
+                    zIndex: 0,
+                    label : {
+                        text : 'max'
+                    }
+                }]
+
               },
           series: [{
               name: 'Battery Cell Voltages',
-              data: Math.abs(batt_plotter) % 10000       
+
+
+              data: Math.abs(batt_plotter) % 10000,
+
+              // threshold: 3250,
+              // negativeColor: 'green',
+              // color: 'red',
+              // tooltip: {
+              //     valueDecimals: 2
+              // }       
           }]
+
       });
 
-        var chat_battery = Highcharts.chart('temp', {
+        chat_battery = Highcharts.chart('temp', {
               chart: {
                   type: 'line'
               },
@@ -565,7 +919,7 @@ var chartConfig = {
               },
               series: [{
                   name: 'Battery cell Temperatures',
-                  data: Math.abs(y) % 100
+                  data: Math.abs(temp_plotter) % 100
               }]
           }); 
 //------------------Guage-----------------------------------------------------------
@@ -771,7 +1125,7 @@ $(function () {
 });
 function reload(){
   chart.series[0].setData(batt_plotter); 
-  chat_battery.series[0].setData(y);
+  chat_battery.series[0].setData(temp_plotter);
 }
 setInterval(reload, 1000)
 function openCity(evt, cityName) {
@@ -789,14 +1143,122 @@ function openCity(evt, cityName) {
 }
 function Init(){
    openCity(event, 'home');
-   initialize(); 
+   // initialize(); 
   
 }
-function battery_caller(data){
+function battery_caller(num){
   // alert(data);
+   batt_plotter = 0;
+   temp_plotter = 0;
+   batt_plotter_selector = num;
+   temp_plotter_selector = num;
+   //console.log(num);
+  // range_max = max_vol[num];
+  // range_low = min_vol[num];
+    var str = "";
+    // var str2= "";
+    str = "Battery Pack "+batt_plotter_selector+" Voltage";
+    str2 = "Battery Pack "+temp_plotter_selector+" Cell Temperatures";
 
-  batt_plotter = data;
+    chart.setTitle({text: str});
+
+    chat_battery.setTitle({text: str2});
+
+
+            // var max_data = 3200;
+            // console.log(chart.yAxis[0]);
+            
+            // $.each(chart.series[0].data,function(i,data){
+                
+            //     if(data.y < max)
+            //         data.graphic.attr({
+            //             fill:'red'
+            //         });
+                
+            // });
+            // //  $.each(chart.series[0].data,function(i,data){
+                
+            //     if(data.y < max)
+            //         data.graphic.attr({
+            //             fill:'red'
+            //         });
+                
+            // });
+      // chart.yAxis[0].max.update({
+      //   fill:'red'
+      // }); 
+
+  
+    // plotLines
+    // chart.series.points[10].update({color:'#008000'});
+
+
+
+    console.log(batt_plotter_selector);
+  // alert(range_low);
 }
+  var curr_max = 2500;
+  var curr_min = 3500;
+
+  var plot_dat;
+function max_up(){
+
+// console.log(curr_max);
+curr_max = curr_max + 25;
+// console.log(curr_max);
+// chart.yAxis[0].setExtremes(3500,curr_max);
+chart.yAxis[0].update({
+    max: curr_max
+}); 
+
+// chart.yAxis[0].max = 10000;
+// console.log(curr_max);
+
+}
+function max_down(){
+
+// console.log(curr_max);
+curr_max = curr_max - 25;
+// console.log(curr_max);
+// chart.yAxis[0].setExtremes(3500,curr_max);
+chart.yAxis[0].update({
+    max: curr_max
+}); 
+
+// chart.yAxis[0].max = 10000;
+// console.log(curr_max);
+
+}
+function min_up(){
+
+// console.log(curr_max);
+curr_min = curr_min + 25;
+// console.log(curr_max);
+// chart.yAxis[0].setExtremes(3500,curr_max);
+chart.yAxis[0].update({
+    min: curr_min
+}); 
+
+// chart.yAxis[0].max = 10000;
+// console.log(curr_max);
+
+}
+function min_down(){
+
+// console.log(curr_max);
+curr_min = curr_min - 25;
+// console.log(curr_max);
+// chart.yAxis[0].setExtremes(3500,curr_max);
+chart.yAxis[0].update({
+    min: curr_min
+}); 
+// chart.
+// chart.yAxis[0].max = 10000;
+// console.log(curr_max);
+
+}
+
+
      
   </script>
   <script type="text/javascript">
@@ -810,9 +1272,9 @@ function battery_caller(data){
         // }
 
         var mapOptions = {
-          center: new google.maps.LatLng(l1, l2),
-          zoom: 40,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
+            center: new google.maps.LatLng(l1, l2),
+            zoom: 40,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         var map = new google.maps.Map(document.getElementById("map_canvas"),
             mapOptions);
@@ -821,7 +1283,6 @@ function battery_caller(data){
     </script>
 <style>                        
 </style>
-<div id="map_canvas"></div>
 
 </body>
 </html>
