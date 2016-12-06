@@ -402,34 +402,35 @@
     var range_max;
     var range_low;
 
-    var can1_igbt1;
-    var can1_igbt2;
-    var can1_motor;
-    var can1_heat; 
-    var can0_igbt1;
-    var can0_igbt2;
-    var can0_motor;
-    var can0_heat; 
-    var can0_igbt;
-    var can_trip_message;
-    var can0_trip_message;
+    var c1igbt0;
+    var c1igbt1;
+    var c1igbt2;
 
-    var bus_currnt1;
-    var bus_voltage1;
-    var bus_voltage2;
-    var trip_event;
-    var bus2_currnt1;
-    var bus2_voltage1;
-    var bus2_voltage2;
-    var trip2_event;
+    var c1motor;
+    var c1bv1;
+    var c1bv2;
+    var c1bi;
+    var c1heat;
+    var c1vs;
+    var c1is;
+    var c1_trip_message;
 
-    var morot_power1;
-
+    var c2igbt0;
+    var c2igbt1;
+    var c2igbt2;
+    
+    var c2motor;
+    var c2bv1;
+    var c2bv2;
+    var c2bi;
+    var c2heat;
+    var c2vs;
+    var c2is;
+    var c2_trip_message;
     var str;
 
     var table = document.getElementById("trip_events");
 
-       
     var socket = io();
 
       socket.on('chat message', function(msg){
@@ -566,50 +567,50 @@
               console.log("Wheel right"+right_T);
           }else if(res[4] == 'C1IGBT0'){
 
-              can0_igbt1 = res[5];
-              can0_igbt2 = res[6];
-              can0_motor = res[7];
-              can0_heat = res[8];
-
-              can0_trip_message = res[11];
+              c1igbt0 = res[5];
+              c1motor = res[9];
+              c1heat = res[8];
+              c1vs = res[9];
+              c1is = res[10];
+              c1_trip_message = res[11];
              
               var i = 0; 
-              console.log(can0_trip_message);
+              console.log(c1_trip_message);
               str_1 = "";
       
-              if(can0_trip_message[0] == 1){
+              if(c1_trip_message[0] == 1){
 
                 str_1 = str_1 + " swUnder Voltage Trip ";
 
-              }else if(can0_trip_message[1] == 1){
+              }else if(c1_trip_message[1] == 1){
                 
                 str_1 = str_1 + " sw Over current Trip ";
 
-              }else if(can0_trip_message[2] == 1){
+              }else if(c1_trip_message[2] == 1){
         
                 str_1 = str_1 + " hw IGBT S/C Trip Zone ";
 
-              }else if(can0_trip_message[3] == 1){
+              }else if(c1_trip_message[3] == 1){
 
                 str_1 = str_1 + " hw Over current Trip zone ";
 
-              }else if(can0_trip_message[4] == 1){
+              }else if(c1_trip_message[4] == 1){
 
                 str_1 = str_1 + " Tripzone fault ";
 
-              }else if(can0_trip_message[8] == 1){
+              }else if(c1_trip_message[8] == 1){
 
                 str_1 = str_1 + " saftey monitoring communication Error ";
 
-              }else if(can0_trip_message[9] == 1){
+              }else if(c1_trip_message[9] == 1){
 
                 str_1 = str_1 + " Resolver Communication Error ";
 
-              }else if(can0_trip_message[10] == 1){
+              }else if(c1_trip_message[10] == 1){
 
                 str_1 = str_1 + " Motor over temperature trip_event ";
 
-              }else if(can0_trip_message[11] == 1){
+              }else if(c1_trip_message[11] == 1){
 
                 str_1 = str_1 + " IGBT over temperature trip ";
 
@@ -627,50 +628,52 @@
 
           }else if(res[4] == 'C1IGBT1'){
 
-              can1_igbt1 = res[5];
-              can1_igbt2 = res[6];
-              can1_motor = res[7];
-              can1_heat = res[8];
+              c1igbt1 = res[5];
+              c1igbt2 = res[6];
+              c1motor = res[7];
+              c1heat = res[8];
+              c1vs = res[9];
+              c1is = res[10];
 
-              can_trip_message = res[11];
+              c1_trip_message = res[11];
              
               var i = 0; 
-              console.log(can_trip_message);
+              console.log(c1_trip_message);
               str = "";
       
-              if(can_trip_message[0] == 1){
+              if(c1_trip_message[0] == 1){
 
                 str = str + " swUnder Voltage Trip ";
 
-              }else if(can_trip_message[1] == 1){
+              }else if(c1_trip_message[1] == 1){
                 
                 str = str + " sw Over current Trip ";
 
-              }else if(can_trip_message[2] == 1){
+              }else if(c1_trip_message[2] == 1){
         
                 str = str + " hw IGBT S/C Trip Zone ";
 
-              }else if(can_trip_message[3] == 1){
+              }else if(c1_trip_message[3] == 1){
 
                 str = str + " hw Over current Trip zone ";
 
-              }else if(can_trip_message[4] == 1){
+              }else if(c1_trip_message[4] == 1){
 
                 str = str + " Tripzone fault ";
 
-              }else if(can_trip_message[8] == 1){
+              }else if(c1_trip_message[8] == 1){
 
                 str = str + " saftey monitoring communication Error ";
 
-              }else if(can_trip_message[9] == 1){
+              }else if(c1_trip_message[9] == 1){
 
                 str = str + " Resolver Communication Error ";
 
-              }else if(can_trip_message[10] == 1){
+              }else if(c1_trip_message[10] == 1){
 
                 str = str + " Motor over temperature trip_event ";
 
-              }else if(can_trip_message[11] == 1){
+              }else if(c1_trip_message[11] == 1){
 
                 str = str + " IGBT over temperature trip ";
 
@@ -689,27 +692,308 @@
 
           }else if(res[4] == 'C1VI'){
 
-              bus_currnt1 = res[5];
-              bus_voltage1 = res[6];
-              bus_voltage2 = res[7];
-              trip_event = res[8];
+              c1bi = res[5];
+              c1bv1 = res[6];
+              c1bv2 = res[7];
+              c1_trip_message = res[8];
 
-              bus_currnt1 = bus_currnt1/10000;
-              bus_voltage1 = bus_voltage1/100;
-              bus_voltage2 = bus_voltage2/100;
+              if(c1_trip_message[0] == 1){
+
+                str = str + " swUnder Voltage Trip ";
+
+              }else if(c1_trip_message[1] == 1){
+                
+                str = str + " sw Over current Trip ";
+
+              }else if(c1_trip_message[2] == 1){
+        
+                str = str + " hw IGBT S/C Trip Zone ";
+
+              }else if(c1_trip_message[3] == 1){
+
+                str = str + " hw Over current Trip zone ";
+
+              }else if(c1_trip_message[4] == 1){
+
+                str = str + " Tripzone fault ";
+
+              }else if(c1_trip_message[8] == 1){
+
+                str = str + " saftey monitoring communication Error ";
+
+              }else if(c1_trip_message[9] == 1){
+
+                str = str + " Resolver Communication Error ";
+
+              }else if(c1_trip_message[10] == 1){
+
+                str = str + " Motor over temperature trip_event ";
+
+              }else if(c1_trip_message[11] == 1){
+
+                str = str + " IGBT over temperature trip ";
+
+              }else {
+
+                str ="";
+
+              }
+              var row = table.insertRow(0);
+              var cell1 = row.insertCell(0);
+              var cell2 = row.insertCell(1);
+              cell1.innerHTML = "Error Messege";
+              cell2.innerHTML = str;
+
+              c1bi = c1bi/10000;
+              c1bv1 = c1bv1/100;
+              c1bv2 = c1bv2/100;
+
+          }else if(res[4] == 'C2IGBT0'){
+
+              c2igbt1 = res[5];
+              c2igbt2 = res[6];
+              c2motor = res[7];
+              c2heat = res[8];
+              c2vs = res[9];
+              c2is = res[10];
+
+              c2_trip_message = res[11];
+             
+              var i = 0; 
+              console.log(c2_trip_message);
+              str_1 = "";
+      
+              if(c2_trip_message[0] == 1){
+
+                str_1 = str_1 + " swUnder Voltage Trip ";
+
+              }else if(c2_trip_message[1] == 1){
+                
+                str_1 = str_1 + " sw Over current Trip ";
+
+              }else if(c2_trip_message[2] == 1){
+        
+                str_1 = str_1 + " hw IGBT S/C Trip Zone ";
+
+              }else if(c2_trip_message[3] == 1){
+
+                str_1 = str_1 + " hw Over current Trip zone ";
+
+              }else if(c2_trip_message[4] == 1){
+
+                str_1 = str_1 + " Tripzone fault ";
+
+              }else if(c2_trip_message[8] == 1){
+
+                str_1 = str_1 + " saftey monitoring communication Error ";
+
+              }else if(c2_trip_message[9] == 1){
+
+                str_1 = str_1 + " Resolver Communication Error ";
+
+              }else if(c2_trip_message[10] == 1){
+
+                str_1 = str_1 + " Motor over temperature trip_event ";
+
+              }else if(c2_trip_message[11] == 1){
+
+                str_1 = str_1 + " IGBT over temperature trip ";
+
+              }else {
+
+                str_1 ="";
+
+              }
+              var row = table.insertRow(0);
+              var cell1 = row.insertCell(0);
+              var cell2 = row.insertCell(1);
+              cell1.innerHTML = "Error Messege";
+              cell2.innerHTML = str_1;
+
+
+          }else if(res[4] == 'C2IGBT1'){
+
+              c2igbt1 = res[5];
+              c2igbt2 = res[6];
+              c2motor = res[7];
+              c2heat = res[8];
+              c2vs = res[9];
+              c2is = res[10];
+
+              c2_trip_message = res[11];
+             
+              var i = 0; 
+              console.log(c2_trip_message);
+              str = "";
+      
+              if(c2_trip_message[0] == 1){
+
+                str = str + " swUnder Voltage Trip ";
+
+              }else if(c2_trip_message[1] == 1){
+                
+                str = str + " sw Over current Trip ";
+
+              }else if(c2_trip_message[2] == 1){
+        
+                str = str + " hw IGBT S/C Trip Zone ";
+
+              }else if(c2_trip_message[3] == 1){
+
+                str = str + " hw Over current Trip zone ";
+
+              }else if(c2_trip_message[4] == 1){
+
+                str = str + " Tripzone fault ";
+
+              }else if(c2_trip_message[8] == 1){
+
+                str = str + " saftey monitoring communication Error ";
+
+              }else if(c2_trip_message[9] == 1){
+
+                str = str + " Resolver Communication Error ";
+
+              }else if(c2_trip_message[10] == 1){
+
+                str = str + " Motor over temperature trip_event ";
+
+              }else if(c2_trip_message[11] == 1){
+
+                str = str + " IGBT over temperature trip ";
+
+              }else {
+
+                str ="";
+
+              }
+              var row = table.insertRow(0);
+              var cell1 = row.insertCell(0);
+              var cell2 = row.insertCell(1);
+              cell1.innerHTML = "Error Messege";
+              cell2.innerHTML = str;
+
+              // console.log(str);
 
           }else if(res[4] == 'C2VI'){
 
-              bus2_currnt1 = res[5];
-              bus2_voltage1 = res[6];
-              bus2_voltage2 = res[7];
-              trip2_event = res[8];
+              c2bi = res[5];
+              c2bv1 = res[6];
+              c2bv2 = res[7];
+              c2_trip_message = res[8];
 
-              bus2_currnt1 = bus2_currnt1/10000;
-              bus2_voltage1 = bus2_voltage1/100;
-              bus2_voltage2 = bus2_voltage2/100;
+              if(c2_trip_message[0] == 1){
 
-          }
+                str = str + " swUnder Voltage Trip ";
+
+              }else if(c2_trip_message[1] == 1){
+                
+                str = str + " sw Over current Trip ";
+
+              }else if(c2_trip_message[2] == 1){
+        
+                str = str + " hw IGBT S/C Trip Zone ";
+
+              }else if(c2_trip_message[3] == 1){
+
+                str = str + " hw Over current Trip zone ";
+
+              }else if(c2_trip_message[4] == 1){
+
+                str = str + " Tripzone fault ";
+
+              }else if(c2_trip_message[8] == 1){
+
+                str = str + " saftey monitoring communication Error ";
+
+              }else if(c2_trip_message[9] == 1){
+
+                str = str + " Resolver Communication Error ";
+
+              }else if(c2_trip_message[10] == 1){
+
+                str = str + " Motor over temperature trip_event ";
+
+              }else if(c2_trip_message[11] == 1){
+
+                str = str + " IGBT over temperature trip ";
+
+              }else {
+
+                str ="";
+
+              }
+              var row = table.insertRow(0);
+              var cell1 = row.insertCell(0);
+              var cell2 = row.insertCell(1);
+              cell1.innerHTML = "Error Messege";
+              cell2.innerHTML = str;
+
+              c2bi = c2bi/10000;
+              c2bv1 = c2bv1/100;
+              c2bv2 = c2bv2/100;
+
+          }else if(res[4] == 'C2VI'){
+
+            
+              c2bi = res[5];
+              c2bv1 = res[6];
+              c2bv2 = res[7];
+              c2_trip_message = res[8];
+
+              if(c2_trip_message[0] == 1){
+
+                str = str + " swUnder Voltage Trip ";
+
+              }else if(c2_trip_message[1] == 1){
+                
+                str = str + " sw Over current Trip ";
+
+              }else if(c2_trip_message[2] == 1){
+        
+                str = str + " hw IGBT S/C Trip Zone ";
+
+              }else if(c2_trip_message[3] == 1){
+
+                str = str + " hw Over current Trip zone ";
+
+              }else if(c2_trip_message[4] == 1){
+
+                str = str + " Tripzone fault ";
+
+              }else if(c2_trip_message[8] == 1){
+
+                str = str + " saftey monitoring communication Error ";
+
+              }else if(c2_trip_message[9] == 1){
+
+                str = str + " Resolver Communication Error ";
+
+              }else if(c2_trip_message[10] == 1){
+
+                str = str + " Motor over temperature trip_event ";
+
+              }else if(c2_trip_message[11] == 1){
+
+                str = str + " IGBT over temperature trip ";
+
+              }else {
+
+                str ="";
+
+              }
+              var row = table.insertRow(0);
+              var cell1 = row.insertCell(0);
+              var cell2 = row.insertCell(1);
+              cell1.innerHTML = "Error Messege";
+              cell2.innerHTML = str;
+
+              c2bi = c2bi/10000;
+              c2bv1 = c2bv1/100;
+              c2bv2 = c2bv2/100;
+            }
+
+
         }else if(res[3] == 'G'){  
           // console.log(res[4]);
           l1 = res[4]/10000000;
@@ -755,25 +1039,29 @@
 
                 $("#theprogressbar").css("height", parseInt(percen));
 
-                $("#can0_1").text(can0_igbt1);  
-                $("#can1_1").text(can1_igbt1);  
-                $("#can2_1").text(can1_igbt2);  
-                $("#can3_1").text(can1_motor);  
-                $("#can4_1").text(can1_heat); 
-                $("#can7_1").text(bus_currnt1);  
-                $("#can8_1").text(bus_voltage1);  
-                $("#can9_1").text(bus_voltage2);  
-                $("#can10_1").text(trip_event);   
+                $("#can0_1").text(c1igbt0);  
+                $("#can1_1").text(c1igbt1);  
+                $("#can2_1").text(c1igbt2);  
+                $("#can3_1").text(c1motor);  
+                $("#can4_1").text(c1heat); 
+                $("#can5_1").text(c1vs); 
+                $("#can6_1").text(c1is); 
+                $("#can7_1").text(c1bi);  
+                $("#can8_1").text(c1bv1);  
+                $("#can9_1").text(c1bv2);  
+                $("#can10_1").text(c1_trip_message);   
 
-                $("#can0_2").text(can1_igbt1);  
-                $("#can1_2").text(can0_igbt1);  
-                $("#can2_2").text(can0_igbt2);  
-                $("#can3_2").text(can0_motor);  
-                $("#can4_2").text(can0_heat);  
-                $("#can7_1").text(bus2_currnt1);  
-                $("#can8_1").text(bus2_voltage1);  
-                $("#can9_1").text(bus2_voltage2);  
-                $("#can10_1").text(trip2_event);  
+                $("#can0_2").text(c2igbt0);  
+                $("#can1_2").text(c2igbt1);  
+                $("#can2_2").text(c2igbt2);  
+                $("#can3_2").text(c2motor);  
+                $("#can4_2").text(c2heat);  
+                $("#can5_2").text(c2vs); 
+                $("#can6_2").text(c1is); 
+                $("#can7_2").text(c2bi);  
+                $("#can8_2").text(c2bv1);  
+                $("#can9_2").text(c1bv2);  
+                $("#can10_2").text(c2_trip_message);  
                 $("#test").text(res);
 
 
