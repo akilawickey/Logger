@@ -40,7 +40,7 @@
 <!-- Resources -->
 
     <!-- Local SPEEDO METER -->
-  <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2M8AYQwpG9mPx3SGAqqDUMiUfIuHgrCI&sensor=true"> -->
+      <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2M8AYQwpG9mPx3SGAqqDUMiUfIuHgrCI&sensor=true">
      </script>
 
 
@@ -277,13 +277,15 @@
       </ul>
       <ui class="list-group" style="width: 23%;float:right;"></ui>
       </span>    
-      <table id="trip_events" class="table table-sm table-inverse">
-      
-      <tr>
-        <td>Error</td>
-        <td>Messege</td>
-      </tr>
-      </table>
+
+          <div style="overflow: auto;">
+            <table id="trip_events" class="table table-sm table-inverse">
+            <tr>
+              <td>Error</td>
+              <td>Messege</td>
+            </tr>
+            </table>
+          </div>
 
   </div>
 
@@ -1207,22 +1209,6 @@
 
                 $("#test").text(res);
 
-
-
-                // $('#theprogressbar').attr('width',max_Temp+'%');
-                // alertify.notify('packet number - '+data, 'success', 1, function(){  console.log('dismissed'); });
-                // $('#theprogressbar').attr('aria-valuenow', max_vol).css('width',max_vol);
-                 // function initialize() {
-                  // console.log(l1/10000000);
-                  // console.log(l2/10000000);
-                   
-      // }
-// 
-        // $('#messages').text($('<li>').text(msg));
-        // $('#test').append($('<li>').text(msg));
-        // $('#test').append($('<li>').text(res));
-        // $('#test').append($('<li>').text(int8View));
-         // x = res;
       });
  //This is not a highcharts object. It just looks a little like one!
 var chartConfig = {
@@ -1455,9 +1441,9 @@ $(function () {
     var labba = Highcharts.chart('rcontainer-torque', Highcharts.merge(gaugeOptions, {
         yAxis: {
             min: 0,
-            max: 14,
+            max: 100,
             title: {
-                text: 'RPM'
+                text: 'Motor Power c2'
             }
         },
         series: [{
@@ -1482,16 +1468,16 @@ $(function () {
         // RPM
         if (labba) {
             point = labba.series[0].points[0];
-            point.update(10);
+            point.update(c2motor_pow);
         }
     }, 2000);
     //----------------------Speed--------------------------------------------------
     var chartlTorque = Highcharts.chart('container-torque', Highcharts.merge(gaugeOptions, {
         yAxis: {
             min: 0,
-            max: 14,
+            max: 100,
             title: {
-                text: 'Speed'
+                text: 'Motor Power c1'
             }
         },
         series: [{
@@ -1516,7 +1502,7 @@ $(function () {
         // RPM
         if (chartlTorque) {
             point = chartlTorque.series[0].points[0];
-            point.update(0);
+            point.update(c1motor_pow);
         }
     }, 100);
     //---------------------left trg----------------------------------------------------------------
@@ -1596,37 +1582,7 @@ function battery_caller(num){
 
     chat_battery.setTitle({text: str2});
 
-
-            // var max_data = 3200;
-            // console.log(chart.yAxis[0]);
-            
-            // $.each(chart.series[0].data,function(i,data){
-                
-            //     if(data.y < max)
-            //         data.graphic.attr({
-            //             fill:'red'
-            //         });
-                
-            // });
-            // //  $.each(chart.series[0].data,function(i,data){
-                
-            //     if(data.y < max)
-            //         data.graphic.attr({
-            //             fill:'red'
-            //         });
-                
-            // });
-      // chart.yAxis[0].max.update({
-      //   fill:'red'
-      // }); 
-
-  
-    // plotLines
-    // chart.series.points[10].update({color:'#008000'});
-
-
-
-    console.log(batt_plotter_selector);
+    // console.log(batt_plotter_selector);
   // alert(range_low);
 }
   var curr_max = 2500;
@@ -1715,6 +1671,7 @@ chart.yAxis[0].update({
     </script>
 <style>                        
 </style>
+<div id="map_canvas"></div>
 
 </body>
 </html>   
