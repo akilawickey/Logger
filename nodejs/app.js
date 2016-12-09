@@ -5,6 +5,11 @@ var http = require('http').Server(app);
 var path = __dirname + '/';
 var io = require('socket.io')(http);
 var router = express.Router();
+var csvWriter = require('csv-write-stream')
+var writer = csvWriter({sendHeaders: false})
+var fs = require('fs');
+
+
 /*Socket IO*/
 router.use("/",function(req,res){
   res.sendFile(path + "index.html");
@@ -23,6 +28,8 @@ var port = new SerialPort("/dev/ttyUSB0", {
   // baudrate: 9600,
   baudrate: 115200,
   bufferSize: 1 ,
+  rtscts: true ,
+
   //parser: port.parsers.readline("\n")
 });
 
@@ -37,14 +44,16 @@ var port = new SerialPort("/dev/ttyUSB0", {
 // });
 
 function myPrint(data) {
-	console.log("-----------------------------------" + data.length);
+	// console.log("-----------------------------------" + data.length);
 	var i;
 	// for (i=0;i<data.length;i++){
  //    	console.log('Data: ' + data[i]);
  //  	}
  	console.log('Data: ' + data);
+  writer.write(data);
 }
 
+   // writer.end()
 
 function validateData(x){
 	if(x != "#"){
@@ -78,7 +87,7 @@ port.on('data', function (data) {
   	// 	console.log("Packet Number :" + no_pkt);
   	// }
 
-  	if(data == "$"){ 	
+  	if(data == "!"){ 	
   		myPrint(str);
   		count = 0;
   		io.emit('chat message', str);								//send msg to web interface.
@@ -107,20 +116,22 @@ io.on('connection', function(socket){
     // io.emit('chat message', msg);
   });
 
+    socket.on('disconnect', function(data) {
+        console.log('-----------------disconnected the socket!-------------');
+    });
+
   // socket.on('disconnect', function(){
   //   console.log('user disconnected');
   // });
 });
 
-http.listen(3000, function(){
-  console.log('listening on :3000');
+http.listen(4001, function(){
+  console.log('listening on :4001');
   console.log('--------------------------------------------------------------');
   console.log('-------------------------TEAM VEGA----------------------------');
   console.log('--------------------------------------------------------------');
+  writer.pipe(fs.createWriteStream('out.csv'))
+
 
 });
 
-
-
-/*-----------------------------------*/
-// app.use(express.static('js')) // data.use(express.static(__dirname + '/js'));
