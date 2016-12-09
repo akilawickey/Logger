@@ -22,16 +22,8 @@
     <script src="https://code.highcharts.com/highcharts-more.js"></script>
     <script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
 
-
-
 <!-- JavaScript -->
     <!-- <script src="//cdn.jsdelivr.net/alertifyjs/1.8.0/alertify.min.js"></script> -->
-
-<!-- CSS -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.8.0/css/alertify.min.css"/>
-<!-- <link rel="stylesheet" type="text/css" href="css/alertify.min.css" /> -->
-
-
 
     <!-- Tabs -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -40,9 +32,9 @@
 <!-- Resources -->
 
     <!-- Local SPEEDO METER -->
-      <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2M8AYQwpG9mPx3SGAqqDUMiUfIuHgrCI&sensor=true">
+        
+   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2M8AYQwpG9mPx3SGAqqDUMiUfIuHgrCI&sensor=true">
      </script>
-
 
     <!--     <link href="CSS/battryChart.css" rel="stylesheet"> -->
 
@@ -93,6 +85,11 @@
       padding: 0;
       margin: 0;
       }
+      .tablecontainer { width: 1200px; overflow; hidden;}
+      tr {display: block; }
+      th, td { width: 1200px; }
+      tbody { display: block; height: 300px; overflow: auto;}
+
     </style>
 
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
@@ -101,19 +98,25 @@
       body { height: 100%;}
       #map_canvas { 
 
-        height: 100%;
-        
+        position: absolute;
+        height: 60%;
+        width: 40%; 
+        float:right;
+        top: 190px;
+        left:700px;
+
+
       }
+
       /*border: 3px solid #73AD21;*/
-      }
       #temp{
       position: absolute;
       z-index: 999;  
       }
     </style>
-        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2M8AYQwpG9mPx3SGAqqDUMiUfIuHgrCI&sensor=true">
-    </script>
-
+        <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2M8AYQwpG9mPx3SGAqqDUMiUfIuHgrCI&sensor=true"> -->
+<!--     </script>
+ -->
   </head>
   <body onload="javascript:Init()" ng-controller="demoController as dm" style="background-color:#262626;color:white;">
   <!-- Tabs -->
@@ -164,7 +167,7 @@
 
 
         <div class = "row">
-            <div class= "col-md-1">
+          <div class= "col-md-1">
                 <div class="list-group nopadding" style="float:left;width: 100%;font-size:12px;white-space: nowrap;">          
                     <a onclick="battery_caller(1);" class="list-group-item">Battery 1</a>
                     <a onclick="battery_caller(2);" class="list-group-item">Battery 2</a>
@@ -188,8 +191,8 @@
             </div>
             </div>
             <div class= "col-md-5 nopadding">
-                <div id="temp" style="width: 97%;"></div>
-            </div>
+             <div id="temp" style="width: 97%;"></div>
+          </div>
         </div>
         <div class = "row">
         <center>
@@ -278,8 +281,8 @@
       <ui class="list-group" style="width: 23%;float:right;"></ui>
       </span>    
 
-          <div style="overflow: auto;">
-            <table id="trip_events" class="table table-sm table-inverse">
+          <div class="tablecontainer">
+            <table id="trip_events"  class="table table-sm table-inverse">
             <tr>
               <td>Error</td>
               <td>Messege</td>
@@ -294,7 +297,6 @@
 
     </div>
     <div id="home" class="tabcontent" style="width: 20%;">
-
 
     <div class="container">
 
@@ -334,16 +336,33 @@
               <highchart id="container-rpm" config="chartConfig" style="width:250px;height:220px;float:left">
               </div>
             </div>
+
             </div>
+            <div id="map_canvas"></div>
 
     </div>
+
     </div>
+
 
      <!-- Tab Debug-->
    <!-- Tab Debug-->
 
   
    <div id="Debug" class="tabcontent">
+
+        <div style="">
+            <nav class="navbar navbar-inverse" style="height: 25">
+            <ul class="nav nav-pills" role="tablist" >
+
+            <li role="presentation" class="active"><a href="#">CAN <span id = "can" class="badge">Loading</span></a></li>
+            <li role="presentation" class="active"><a href="#">BATTERY <span id = "bat" class="badge">Loading</span></a></li>
+            <li role="presentation" class="active"><a href="#">FLIGHT <span id = "fli" class="badge">Loading</span></a></li>
+
+             </ul>
+            </nav>
+
+       </div>
        <div id="sTitle" style="margin: 20px;
                                font-size: 20px;
                                font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;" > Data Received 
@@ -358,11 +377,11 @@
                              padding-left: 10px;
                              border-width: 1px;">
        </div>
-       <div id="sTitle2" style="margin: 20px;
+   <!--     <div id="sTitle2" style="margin: 20px;
                              font-size: 20px;
                              font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;" > Send Data to Xbee 
-       </div>
-       <div id="test2" style="margin-left: 80px; 
+       </div> -->
+<!--        <div id="test2" style="margin-left: 80px; 
                                border: 2px solid black;
                                border-radius: 10px; 
                                width:1150px;
@@ -371,7 +390,7 @@
                                font-size: 18px;
                                padding-left: 10px;
                                border-width: 1px;">
-        </div>
+        </div> -->
    </div>
    <script type="text/javascript">
 
@@ -473,6 +492,10 @@
     var c2_trip_message;
     var str;
 
+    var can_;
+    var bat_;
+    var fli_;
+
     var table = document.getElementById("trip_events");
 
     var socket = io();
@@ -481,7 +504,7 @@
       socket.on('chat message', function(msg){
         var res = msg.split(",");
         time = getDateTime();
-        console.log(time);
+        // console.log(time);
               // console.log(res[3]);
 
         // alert(res[3]);
@@ -581,7 +604,7 @@
           batt_id = res[5];
           max_Temp =res[13];
           batt_temp = [];
-          console.log(batt_id);
+          // console.log(batt_id);
 
 
           if(batt_id == 1){
@@ -598,7 +621,7 @@
             } 
                y[0] = batt_temp; 
                if(temp_plotter_selector == 1){
-                console.log("first battery temp");
+                // console.log("first battery temp");
 
                   temp_plotter = y[0];
                   min_Temp[temp_plotter_selector] = Math.min.apply(Math, y[temp_plotter_selector]);
@@ -676,13 +699,19 @@
           }
 
         }else if(res[3] == 'C'){
+
+          
+
           can_l = res[4].toString(); 
           part1 = parseInt(res[5]);
           part2 = parseInt(res[6]);
 
           // console.log(part1+' '+(part2*consta));
           // console.log(part2);
-          tor = part1+(part2*consta);
+
+              tor = part1+(part2*consta);
+              // console.log(tor);
+          
 
           if((can_l[0] == "B")&&(can_l[1] == "B")){
             if(tor == 0){
@@ -692,7 +721,7 @@
               lef_T = ((tor));
             }
 
-             console.log("Wheel left"+lef_T);
+             // console.log("Wheel left: "+lef_T);
           }
           else if((can_l[0] == "B")&&(can_l[1] == "C")){
 
@@ -702,7 +731,7 @@
             }else if(tor>0){
               right_T = 255 - (tor);
             }
-              console.log("Wheel right"+right_T);
+              // console.log("Wheel right: "+right_T);
           }else if(res[4] == 'C1IGBT0'){
 
               c1igbt0 = res[5];
@@ -899,7 +928,7 @@
               c2_trip_message = res[10];
              
               var i = 0; 
-              console.log(c2_trip_message);
+              // console.log(c2_trip_message);
               str_1 = " "+time+" ";
 
       
@@ -963,7 +992,7 @@
               c2_trip_message = res[11];
              
               var i = 0; 
-              console.log(c2_trip_message);
+              // console.log(c2_trip_message);
               str = " "+time+" ";
       
               if(c2_trip_message[0] == 1){
@@ -1138,7 +1167,21 @@
           // console.log(res[4]);
           l1 = res[4]/10000000;
           l2 = res[5]/10000000;
+
+
+          // console.log(l1);
+          // console.log(l2);
           gmap(l1,l2);
+
+            
+        }else if(res[1] == 'S'){  
+          // console.log(res[4]);
+              can_ = res[2];
+              bat_ = res[3];
+              fli_ = res[4];
+          // l1 = res[4]/10000000;
+          // l2 = res[5]/10000000;
+        
 
           // console.log(l1);
           // console.log(l2);
@@ -1146,8 +1189,8 @@
             
         }
 
-        longt = l1;
-        lati = l2;
+        // longt = l1;
+        // lati = l2;
    
         var percen = Math.round((max_vol/4000)*100);
         var data = y[1] + " ";
@@ -1208,6 +1251,11 @@
 
 
                 $("#test").text(res);
+                $("#can").text(can_);
+                $("#bat").text(bat_);
+                $("#fli").text(fli_);
+
+
 
       });
  //This is not a highcharts object. It just looks a little like one!
@@ -1272,28 +1320,6 @@ var chartConfig = {
               
                 min: 2500,
                 max: 3500,
-              
-               plotLines: [{
-                    id: 'limit-min',
-                    color: '#FF0000',
-                    dashStyle: 'ShortDash',
-                    width: 2,
-                    value: 3300,
-                    zIndex: 0,
-                    label : {
-                        text : 'min'
-                    }
-                }, {
-                    id: 'limit-max',
-                    color: '#008000',
-                    dashStyle: 'ShortDash',
-                    width: 2,
-                    value: 3400,
-                    zIndex: 0,
-                    label : {
-                        text : 'max'
-                    }
-                }]
 
               },
           series: [{
@@ -1304,7 +1330,7 @@ var chartConfig = {
 
               // threshold: 3250,
               // negativeColor: 'green',
-              // color: 'red',
+              color: '#ff9f4c',
               // tooltip: {
               //     valueDecimals: 2
               // }       
@@ -1340,21 +1366,38 @@ var chartConfig = {
                   data: Math.abs(temp_plotter) % 100
               }]
           }); 
+
+        setInterval(function () {
+
+            var min = min_vol;
+            var max = max_vol;
+
+            // console.log("Min : "+min_vol);
+            // console.log("Max : "+max_vol);
+
+            $.each(chart.series[0].data,function(i,data){
+
+                if(data.y > max){
+                    data.graphic.attr({
+                        fill:'#4cc9ff'
+                    });
+                }
+                // if(data.y >= max)
+                //     data.graphic.attr({
+                //         fill:'green'
+                //     });  
+                
+            });
+
+
+
+         }, 1);
 //------------------Guage-----------------------------------------------------------
 $(function () {
     var gaugeOptions = {
         chart: {
             type: 'solidgauge',
             backgroundColor: '#F6F6F6'
-        },
-        plotOptions:{
-          series: {
-            animation: {
-                duration :1,
-            }
-
-          }
-
         },
         title: null,
         pane: {
@@ -1392,6 +1435,10 @@ $(function () {
         },
         plotOptions: {
             solidgauge: {
+                animation: {
+                    duration :10,
+                    easing: 'easeOutBounce'
+                },
                 dataLabels: {
                     y: 5,
                     borderWidth: 0,
@@ -1405,13 +1452,14 @@ $(function () {
     var chartRpm = Highcharts.chart('container-rpm', Highcharts.merge(gaugeOptions, {
         yAxis: {
             min: 0,
-            max: 14,
+            max: 70,
             title: {
                 text: 'Right Torque'
             }
         },
         series: [{
             name: 'Right Torque',
+
             data: [1],
             dataLabels: {
                 format: '<div style="text-align:center"><span style="font-size:25px;color:' +
@@ -1434,8 +1482,43 @@ $(function () {
             point = chartRpm.series[0].points[0];
             point.update(right_T);
         }
-    }, 100);
+    }, 400);
+    //---------------------left trg----------------------------------------------------------------
+    var lefttrq = Highcharts.chart('container-speed', Highcharts.merge(gaugeOptions, {
+        yAxis: {
+            min: 0,
+            max: 70,
+            title: {
+                text: 'Left Torque'
+            }
+        },
+        series: [{
+            name: 'Left Torque',
 
+            data: [1],
+            dataLabels: {
+                format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+                    ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y:.1f}</span><br/>' +
+                       '<span style="font-size:12px;color:silver">* 1000 / min</span></div>'
+            },
+            tooltip: {
+                valueSuffix: ' revolutions/min'
+            }
+        }]
+    }));
+       // Bring life to the dials
+    setInterval(function () {
+        // Speed
+        var point,
+            newVal,
+            inc;
+        // RPM
+        if (lefttrq) {
+            point = lefttrq.series[0].points[0];
+            point.update(lef_T);
+
+        }
+    }, 400);
     //--------------------------------------------------------------------------------------------
 
     var labba = Highcharts.chart('rcontainer-torque', Highcharts.merge(gaugeOptions, {
@@ -1449,6 +1532,7 @@ $(function () {
         series: [{
             name: 'RPM',
             data: [1],
+
             dataLabels: {
                 format: '<div style="text-align:center"><span style="font-size:25px;color:' +
                     ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y:.1f}</span><br/>' +
@@ -1470,12 +1554,12 @@ $(function () {
             point = labba.series[0].points[0];
             point.update(c2motor_pow);
         }
-    }, 2000);
+    }, 10000);
     //----------------------Speed--------------------------------------------------
     var chartlTorque = Highcharts.chart('container-torque', Highcharts.merge(gaugeOptions, {
         yAxis: {
             min: 0,
-            max: 100,
+            max: 80,
             title: {
                 text: 'Motor Power c1'
             }
@@ -1504,41 +1588,8 @@ $(function () {
             point = chartlTorque.series[0].points[0];
             point.update(c1motor_pow);
         }
-    }, 100);
-    //---------------------left trg----------------------------------------------------------------
-    var lefttrq = Highcharts.chart('container-speed', Highcharts.merge(gaugeOptions, {
-        yAxis: {
-            min: 0,
-            max: 14,
-            title: {
-                text: 'Left Torque'
-            }
-        },
-        series: [{
-            name: 'Left Torque',
-            data: [1],
-            dataLabels: {
-                format: '<div style="text-align:center"><span style="font-size:25px;color:' +
-                    ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y:.1f}</span><br/>' +
-                       '<span style="font-size:12px;color:silver">* 1000 / min</span></div>'
-            },
-            tooltip: {
-                valueSuffix: ' revolutions/min'
-            }
-        }]
-    }));
-       // Bring life to the dials
-    setInterval(function () {
-        // Speed
-        var point,
-            newVal,
-            inc;
-        // RPM
-        if (lefttrq) {
-            point = lefttrq.series[0].points[0];
-            point.update(lef_T);
-        }
-    }, 100);
+    }, 10000);
+    
     //---------------------------------------------------------------------------------------------------
 });
 function reload(){
@@ -1581,6 +1632,8 @@ function battery_caller(num){
     chart.setTitle({text: str});
 
     chat_battery.setTitle({text: str2});
+
+
 
     // console.log(batt_plotter_selector);
   // alert(range_low);
@@ -1651,27 +1704,22 @@ chart.yAxis[0].update({
   </script>
   <script type="text/javascript">
       function gmap(l1,l2) {
-
-        // if((l1 == 0)&&(l2==0)){
-
-        //   l1=6.929912;
-        //   l2= 79.861694;
-
-        // }
-
+        if((l1 == 0)&&(l2==0)){
+          l1=6.929912;
+          l2= 79.861694;
+        }
         var mapOptions = {
             center: new google.maps.LatLng(l1, l2),
-            zoom: 40,
+            zoom: 9,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         var map = new google.maps.Map(document.getElementById("map_canvas"),
             mapOptions);
-
       }
-    </script>
+  </script>
 <style>                        
 </style>
-<div id="map_canvas"></div>
 
 </body>
+
 </html>   
