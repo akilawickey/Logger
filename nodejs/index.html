@@ -173,8 +173,8 @@
                     <a onclick="battery_caller(2);" class="list-group-item">Battery 2</a>
                     <a onclick="battery_caller(3);" class="list-group-item">Battery 3</a>
                     <a onclick="battery_caller(4);" class="list-group-item">Battery 4</a>
-                    <a href="" class="list-group-item">Battery 5</a>
-                    <a href="#" class="list-group-item">Battery 6</a>
+                    <a onclick="battery_caller(5);" class="list-group-item">Battery 5</a>
+                    <a onclick="battery_caller(6);" class="list-group-item">Battery 6</a>
                     <a href="#" class="list-group-item">Battery 7</a>
                     <a href="#" class="list-group-item">Battery 8</a>
                     <a href="#" class="list-group-item">Battery 9</a>
@@ -496,6 +496,9 @@
     var bat_;
     var fli_;
 
+    var rpm1;
+    var rpm2;
+
     var table = document.getElementById("trip_events");
 
     var socket = io();
@@ -597,6 +600,46 @@
 
                   batt_plotter = x[1];
             }
+          }else if(batt_id == 5){
+               min_vol = res[8];
+               max_vol = res[7];
+
+              // console.log(res[7]);
+              x[1] = [];
+
+            for(var i=19; i<69; i++) { 
+              res[i] = parseInt(res[i], 10);
+              if(res[i] > 4000){
+                res[i] = 0;
+              }
+              batt.push(res[i]);
+            } 
+              x[1] = batt;
+               if(batt_plotter_selector == 5){
+                // console.log("second battery");
+
+                  batt_plotter = x[1];
+            }
+          }else if(batt_id == 6){
+               min_vol = res[8];
+               max_vol = res[7];
+
+              // console.log(res[7]);
+              x[1] = [];
+
+            for(var i=19; i<69; i++) { 
+              res[i] = parseInt(res[i], 10);
+              if(res[i] > 4000){
+                res[i] = 0;
+              }
+              batt.push(res[i]);
+            } 
+              x[1] = batt;
+               if(batt_plotter_selector == 6){
+                // console.log("second battery");
+
+                  batt_plotter = x[1];
+            }
           }
 
         }else if(res[3] == 'T'){
@@ -688,6 +731,48 @@
               y[1] = batt_temp;
 
                if(temp_plotter_selector == 4){
+                // console.log("second battery temp");
+                  temp_plotter = y[1];
+                  // console.log(temp_plotter);
+                  min_Temp[temp_plotter_selector] = Math.min.apply(Math, y[temp_plotter_selector]);
+                  $("#data_two").text(min_Temp[temp_plotter_selector]);
+                  chart.yAxis[0].setExtremes(0,1600);
+               }
+             
+          }else if(batt_id == 5){
+               y[1] = [];
+             
+            for(var i=6; i<26; i++) { 
+              res[i] = parseInt(res[i], 10);
+              if(res[i]>100){
+                 res[i] = 0;
+               }
+              batt_temp.push(res[i]);
+            } 
+              y[1] = batt_temp;
+
+               if(temp_plotter_selector == 5){
+                // console.log("second battery temp");
+                  temp_plotter = y[1];
+                  // console.log(temp_plotter);
+                  min_Temp[temp_plotter_selector] = Math.min.apply(Math, y[temp_plotter_selector]);
+                  $("#data_two").text(min_Temp[temp_plotter_selector]);
+                  chart.yAxis[0].setExtremes(0,1600);
+               }
+             
+          }else if(batt_id == 6){
+               y[1] = [];
+             
+            for(var i=6; i<26; i++) { 
+              res[i] = parseInt(res[i], 10);
+              if(res[i]>100){
+                 res[i] = 0;
+               }
+              batt_temp.push(res[i]);
+            } 
+              y[1] = batt_temp;
+
+               if(temp_plotter_selector == 6){
                 // console.log("second battery temp");
                   temp_plotter = y[1];
                   // console.log(temp_plotter);
@@ -1187,7 +1272,13 @@
           // console.log(l2);
 
             
+        }else if(res[3] == 'E2'){
+
+        	  rpm1 = res[4];
+        	  rpm2 = res[5];
+
         }
+
 
         // longt = l1;
         // lati = l2;
@@ -1526,7 +1617,7 @@ $(function () {
             min: 0,
             max: 100,
             title: {
-                text: 'Motor Power c2'
+                text: 'Motor RPM2'
             }
         },
         series: [{
@@ -1552,7 +1643,7 @@ $(function () {
         // RPM
         if (labba) {
             point = labba.series[0].points[0];
-            point.update(c2motor_pow);
+            point.update(rpm2);
         }
     }, 10000);
     //----------------------Speed--------------------------------------------------
@@ -1561,7 +1652,7 @@ $(function () {
             min: 0,
             max: 80,
             title: {
-                text: 'Motor Power c1'
+                text: 'Motor RPM1'
             }
         },
         series: [{
@@ -1586,7 +1677,7 @@ $(function () {
         // RPM
         if (chartlTorque) {
             point = chartlTorque.series[0].points[0];
-            point.update(c1motor_pow);
+            point.update(rpm1);
         }
     }, 10000);
     
@@ -1596,7 +1687,7 @@ function reload(){
   chart.series[0].setData(batt_plotter); 
   chat_battery.series[0].setData(temp_plotter);
 }
-setInterval(reload, 1000)
+setInterval(reload, 1000);
 function openCity(evt, cityName) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
@@ -1710,11 +1801,12 @@ chart.yAxis[0].update({
         }
         var mapOptions = {
             center: new google.maps.LatLng(l1, l2),
-            zoom: 9,
+            zoom: 11,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         var map = new google.maps.Map(document.getElementById("map_canvas"),
             mapOptions);
+        
       }
   </script>
 <style>                        
