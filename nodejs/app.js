@@ -125,8 +125,8 @@ io.on('connection', function(socket){
   // });
 });
 
-http.listen(4001, function(){
-  console.log('listening on :4001');
+http.listen(4000, function(){
+  console.log('listening on :4000');
   console.log('--------------------------------------------------------------');
   console.log('-------------------------TEAM VEGA----------------------------');
   console.log('--------------------------------------------------------------');
@@ -134,4 +134,3 @@ http.listen(4001, function(){
 
 
 });
-
