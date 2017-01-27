@@ -130,6 +130,7 @@
 
       <ul class="nav navbar-nav">
         <li class="active"><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'home')">Home</a></li>
+        <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'run')">Run</a></li>
         <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'battery')">Battery</a></li>
         <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'data')">CAN Message</a></li>
         <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'Debug')">Debug</a></li>
@@ -392,6 +393,39 @@
                                border-width: 1px;">
         </div> -->
    </div>
+   <div id="run" class="tabcontent">
+
+        <div style="">
+            <nav class="navbar navbar-inverse" style="height: 25">
+            <ul class="nav nav-pills" role="tablist" >
+
+            <li role="presentation" class="active"><a href="#">CAN <span id = "can" class="badge">Loading</span></a></li>
+            <li role="presentation" class="active"><a href="#">BATTERY <span id = "bat" class="badge">Loading</span></a></li>
+            <li role="presentation" class="active"><a href="#">FLIGHT <span id = "fli" class="badge">Loading</span></a></li>
+
+             </ul>
+            </nav>
+
+       </div>
+       <div id="batt_can" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+       
+   <!--     <div id="sTitle2" style="margin: 20px;
+                             font-size: 20px;
+                             font-family: Lucida Sans Unicode, Lucida Grande, sans-serif;" > Send Data to Xbee 
+       </div> -->
+<!--        <div id="test2" style="margin-left: 80px; 
+                               border: 2px solid black;
+                               border-radius: 10px; 
+                               width:1150px;
+                               height: 200px;
+                               overflow: scroll;
+                               font-size: 18px;
+                               padding-left: 10px;
+                               border-width: 1px;">
+        </div> -->
+   </div>
+
    <script type="text/javascript">
 
                      function getDateTime() {
@@ -428,6 +462,7 @@
 
     var chart;
     var chat_battery;
+    var chart_batt_can;
     var time;
 
 
@@ -499,14 +534,32 @@
     var rpm1;
     var rpm2;
 
+    //battery CAN converted data
+    var pack_num;    //with B0 id
+    var data_id;
+    var op_mode;
+    var bat_voltage;
+    var bat_currnt;
+	var bat_low;
+    var bat_high;
+    var high_t1;    //with B1 id
+    var high_t2;
+
+    var newstr;
+    var batt_can_plot;
+    var bat_currnt_array = [];
+    var i_bat = 0;
+
     var table = document.getElementById("trip_events");
 
     var socket = io();
-
-
+    // var now = new Date(); 
+    // var now_utc = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+    
       socket.on('chat message', function(msg){
         var res = msg.split(",");
         time = getDateTime();
+
         // console.log(time);
               // console.log(res[3]);
 
@@ -1245,15 +1298,57 @@
               c2bi = c2bi/10000;
               c2bv1 = c2bv1/100;
               c2bv2 = c2bv2/100;
-            }
+            
+
+          }else if(res[4] == 'B0'){
+
+			  pack_num = res[5];    //with B0 id
+              data_id = res[6];
+              op_mode = res[7];
+              bat_voltage = res[8];
+    		  bat_low = res[9];
+              bat_high = res[10];
+     			
+		        // bat_currnt_array[i_bat] = [time, bat_high];
+		        // i_bat++;
+		        // time
+		        // console.log(bat_high);
+		        // time = '["'+time+'"';
+		        // bat_high = bat_high + ']';
+		        // bat_currnt_array.push(time,bat_high);
+		        // var newstr = '[' + bat_currnt_array.join(', ') + ']';
+		        // newstr = '['+newstr+']'; 
 
 
+
+		        //[["31/12/2013", 345.2],
+		        // console.log(typeof(bat_high));
+		        // console.log(JSON.parse(bat_currnt_array));
+		        bat_high = parseInt(bat_high,10);
+		        bat_currnt_array[i_bat] = bat_high;
+		        i_bat++;
+
+		        // bat_currnt_array.push(bat_high/10)
+		        // newstr = '[' + bat_currnt_array.join(', ') + ']';
+		        console.log(bat_currnt_array);
+
+          }else if(res[4] == 'B1'){
+			  	
+			  high_t1 = res[8];    
+			  high_t2 = res[9];
+			  bat_currnt =res[10];
+
+          }else if(res[4] == 'B2'){
+			  	
+			  soc = res[8];
+			  console.log(soc);
+
+          }    
+	
         }else if(res[3] == 'G'){  
           // console.log(res[4]);
           l1 = res[4]/10000000;
           l2 = res[5]/10000000;
-
-
           // console.log(l1);
           // console.log(l2);
           gmap(l1,l2);
@@ -1261,9 +1356,9 @@
             
         }else if(res[1] == 'S'){  
           // console.log(res[4]);
-              can_ = res[2];
-              bat_ = res[3];
-              fli_ = res[4];
+          can_ = res[2];
+          bat_ = res[3];
+          fli_ = res[4];
           // l1 = res[4]/10000000;
           // l2 = res[5]/10000000;
         
@@ -1274,8 +1369,8 @@
             
         }else if(res[3] == 'E2'){
 
-        	  rpm1 = res[4];
-        	  rpm2 = res[5];
+          rpm1 = res[4];
+          rpm2 = res[5];
 
         }
 
@@ -1348,6 +1443,7 @@
 
 
 
+
       });
  //This is not a highcharts object. It just looks a little like one!
 var chartConfig = {
@@ -1395,6 +1491,74 @@ var chartConfig = {
    //setup some logic for the chart
   }
 };
+
+// battery caaaan
+
+chart_batt_can = new Highcharts.Chart({
+		 chart: {
+	       renderTo: 'batt_can',
+		   zoomType: 'x',
+		   spacingRight: 20
+	    },
+          
+  		title: {
+		text: 'Car Data'
+	    },
+	    subtitle: {
+		text: document.ontouchstart === undefined ?
+		    'Click and drag in the plot area to zoom in' :
+		    'Pinch the chart to zoom in'
+	    },
+	    xAxis: {
+		type: 'linear',
+		//minRange: 2 * 24 * 3600000,
+		//maxZoom: 5 * 24 * 3600000, // fourteen days
+
+		title: {
+		    text: null
+		}
+	    },
+	    yAxis: {
+		title: {
+		    text: 'Current'
+		}
+	    },
+	    tooltip: {
+		shared: true
+	    },
+	    legend: {
+		enabled: true
+	    },
+	    plotOptions: {
+		area: {
+		    fillColor: {
+			linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+			stops: [
+			    [0, Highcharts.getOptions().colors[9]],
+			    [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+			]
+		    },
+		    //lineWidth: 1,
+		    marker: {
+			enabled: false
+		    },
+		    shadow: false,
+		    states: {
+			hover: {
+			    lineWidth: 1
+			}
+		    },
+		    threshold: null
+		}
+	    },
+
+	    series: [{
+                type: 'area',
+                pointInterval: 24 * 3600 * 1000,
+                data: [1,2,3]
+            }]
+	});     
+
 //-------------------------------Battery---------------------------------------------------
        chart = Highcharts.chart('container', {
           chart: {
@@ -1484,6 +1648,8 @@ var chartConfig = {
 
          }, 1);
 //------------------Guage-----------------------------------------------------------
+
+
 $(function () {
     var gaugeOptions = {
         chart: {
@@ -1686,6 +1852,7 @@ $(function () {
 function reload(){
   chart.series[0].setData(batt_plotter); 
   chat_battery.series[0].setData(temp_plotter);
+  chart_batt_can.series[0].setData(bat_currnt_array);
 }
 setInterval(reload, 1000);
 function openCity(evt, cityName) {
